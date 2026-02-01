@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downtime Calculator</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:wght@400;600&family=PT+Sans:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+</head>
+
+<body class="theme-dark">
+  <div id="background-layer"></div>
+  <div id="overlay-layer"></div>
+
+  <div id="app">
+
+    <!-- ========================================================= -->
+    <!-- HEADER -->
+    <!-- ========================================================= -->
+    <header class="app-header">
+      <div class="title-block">
+        <img src="img/icon.webp" class="title-icon" alt="Icon" />
+        <h1 class="app-title">Downtime Calculator</h1>
+      </div>
+
+      <!-- Light Mode Toggle -->
+      <div class="theme-toggle">
+        <label class="toggle-label">
+          <input type="checkbox" id="lightModeToggle" />
+          <span class="toggle-custom"></span>
+          <span class="toggle-text">Light Mode</span>
+        </label>
+      </div>
+    </header>
+
+    <!-- ========================================================= -->
+    <!-- GENERAL INPUT CARD -->
+    <!-- ========================================================= -->
+    <div class="card">
+
+      <div class="general-input-header">
+        <h2>General Input</h2>
+
+        <div class="system-toggle-container">
+          <div class="system-toggle">
+            <label>
+              <input type="radio" name="system" value="pf2" checked />
+              <span>PF2</span>
+            </label>
+            <label>
+              <input type="radio" name="system" value="sf2" />
+              <span>SF2</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="dateInput">Date</label>
+        <input type="text" id="dateInput" inputmode="numeric" placeholder="YYYY-MM-DD" />
+      </div>
+
+      <div class="form-row">
+        <label for="scenarioInput">Scenario / Adventure</label>
+        <input type="text" id="scenarioInput" maxlength="80" />
+      </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- CHARACTER INPUT CARD -->
+    <!-- ========================================================= -->
+    <div class="card">
+      <h2>Characters</h2>
+      <div id="character-rows"></div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- SUMMARY CARD -->
+    <!-- ========================================================= -->
+    <div class="card">
+      <h2>Summary</h2>
+
+      <pre id="summary-output" class="summary-output"></pre>
+
+      <button id="copy-summary-btn" class="btn">Copy Summary</button>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- APPENDIX -->
+    <!-- ========================================================= -->
+    <div class="card appendix">
+      <button id="appendix-toggle" class="btn-secondary">Show Appendix</button>
+
+      <div id="appendix-content" class="hidden">
+
+        <div class="appendix-block">
+          <h3>Acronyms</h3>
+          <p><strong>PF2</strong> — Pathfinder Second Edition</p>
+          <p><strong>SF2</strong> — Starfinder Second Edition</p>
+          <p><strong>HHST</strong> — Horizon Hunters: Storied Talent</p>
+        </div>
+
+        <div class="appendix-block">
+          <h3>Proficiency</h3>
+          <p><strong>T</strong> — Trained</p>
+          <p><strong>E</strong> — Expert</p>
+          <p><strong>M</strong> — Master</p>
+          <p><strong>L</strong> — Legendary (PF2 only)</p>
+        </div>
+
+        <div class="appendix-block">
+          <h3>Downtime Income Table</h3>
+          <div id="downtime-table-container"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- ERROR BANNER -->
+    <!-- ========================================================= -->
+    <div id="error-banner" class="banner banner-error hidden">
+      Could not load CSV data.
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- COPY BANNER -->
+    <!-- ========================================================= -->
+    <div id="copy-banner" class="banner banner-copy hidden">
+      Summary copied to clipboard!
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
