@@ -28,11 +28,12 @@ The built‑in Appendix includes:
 ## 🚀 Getting Started
 
 ### Clone the repo
-git clone https://github.com/<your-username>/<your-repo>.git
+`git clone https://github.com/your-username/your-repo.git`
 
 ---
 
 ### 📂 File layout
+```
 /
 ├── index.html
 ├── styles.css
@@ -42,7 +43,7 @@ git clone https://github.com/<your-username>/<your-repo>.git
 └── img/
 ├── icon.webp
 └── background.webp
-
+```
 
 ### Run it
 Just open `index.html` in your browser.  
