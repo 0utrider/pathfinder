@@ -1,0 +1,94 @@
+:root {
+    --bg: #303841;
+    --card: #3b434d;
+    --text: #f4f2ec;
+    --accent: #f4f2ec;
+    --accent-hover: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 40px 20px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Cormorant Garamond", serif;
+    line-height: 1.7;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    background: var(--card);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.35);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+header img {
+    width: 140px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Nerfed title size + Cinzel */
+h1 {
+    font-family: "Cinzel", serif;
+    font-size: 1.75rem;      /* reduced from 2.2rem */
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin: 0;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+/* Section headers also Cinzel */
+h2 {
+    font-family: "Cinzel", serif;
+    font-size: 1.25rem;
+    margin-top: 32px;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+p, li, a {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.05rem;
+}
+
+ul {
+    margin: 10px 0 0 0;
+    padding-left: 22px;
+}
+
+li {
+    margin: 6px 0;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.top-link {
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+    text-align: center;
+}
