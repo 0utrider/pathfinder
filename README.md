@@ -9,6 +9,8 @@ Each tool is self‑contained so GMs and players can clone only what they need.
 
 - **[Downtime Calculator](downtime/index.html)**  
   A streamlined tool for calculating Pathfinder Society and Starfinder Society (2e) downtime income, with mobile‑friendly layout and copy‑to‑clipboard summaries.
+- **[Outrider's RNG](https://foundryvtt.com/packages/outrider-rng)**  
+  A Foundry VTT module for generating more randomness in dice rolls using a crytographic generator.
 
 ---
 
