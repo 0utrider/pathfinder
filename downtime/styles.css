@@ -610,3 +610,20 @@ body.theme-light .downtime-table td {
     font-size: 0.8rem;
   }
 }
+
+/* Global link styling */
+a {
+  color: #b38cff;        /* pleasant purple that fits your palette */
+  font-weight: 600;      /* bold instead of underlined */
+  text-decoration: none; /* remove underline */
+}
+
+/* Keep visited links the same color */
+a:visited {
+  color: #b38cff;
+}
+
+/* Optional: subtle hover effect */
+a:hover {
+  color: #d3b3ff;        /* slightly lighter purple on hover */
+}
