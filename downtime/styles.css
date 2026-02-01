@@ -376,6 +376,7 @@ body.theme-light .radio-pill {
   border-radius: 3px;
   border: 1px solid rgba(255, 255, 255, 0.4);
   position: relative;
+  margin-right: 0.35rem;
 }
 
 body.theme-light .radio-pill .x-mark {
