@@ -28,7 +28,7 @@ The built‑in Appendix includes:
 ## 🚀 Getting Started
 
 ### Clone the repo
-`git clone https://github.com/your-username/your-repo.git`
+`git clone https://github.com/YOUR-USERNAME/YOUR-REPO.git`
 
 ---
 
@@ -41,8 +41,8 @@ The built‑in Appendix includes:
 ├── pf2-downtime.csv
 ├── sf2-downtime.csv
 └── img/
-├── icon.webp
-└── background.webp
+    ├── icon.webp
+    └── background.webp   (optional)
 ```
 
 ### Run it
