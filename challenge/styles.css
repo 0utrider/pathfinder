@@ -1,0 +1,314 @@
+/* ===============================
+   GLOBAL PAGE STYLES
+   =============================== */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: #f4f0e8;
+    color: #2a1f1a;
+}
+
+.page-header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.site-logo {
+    width: 80px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+h1, h2, h3 {
+    font-family: "Cinzel", serif;
+    margin: 0 0 10px;
+    color: #3a2a20;
+}
+
+/* ===============================
+   CARD LAYOUT
+   =============================== */
+
+.card {
+    background: #fffdf8;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px auto;
+    width: min(900px, 90%);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card h2 {
+    border-bottom: 2px solid #d6c7a8;
+    padding-bottom: 6px;
+    margin-bottom: 15px;
+}
+
+/* ===============================
+   SPLIT CONTAINER (Card 2)
+   =============================== */
+
+.split-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.input-side, .output-side {
+    flex: 1;
+    min-width: 260px;
+}
+
+/* ===============================
+   INPUT LABELS + FIELDS
+   =============================== */
+
+.input-label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.player-level-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.player-level-row label {
+    width: 30px;
+    font-weight: bold;
+}
+
+.player-level-input {
+    width: 60px;
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid #b8a88a;
+    background: #fff;
+}
+
+.player-level-input.invalid {
+    border-color: #d00000;
+    background: #ffe5e5;
+}
+
+/* ===============================
+   SLIDERS
+   =============================== */
+
+input[type="range"] {
+    width: 100%;
+    margin: 6px 0;
+    accent-color: #7a4bd8; /* Purple theme */
+}
+
+.range-display {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #4a3a2a;
+}
+
+/* ===============================
+   OUTPUT SIDE
+   =============================== */
+
+.output-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #e2d8c5;
+}
+
+.output-value {
+    font-weight: bold;
+}
+
+.greyed {
+    opacity: 0.5;
+}
+
+.pregen-active {
+    color: #2a7a2a;
+}
+
+.hardmode-highlight,
+.hardmode-active {
+    color: #cfa400;
+    font-weight: bold;
+}
+
+/* TOTAL CP */
+.total-row {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 2px solid #b8a88a;
+}
+
+.total-value {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #7a4bd8;
+}
+
+/* ===============================
+   FOOTNOTE HIGHLIGHTS
+   =============================== */
+
+.footnotes li {
+    margin-bottom: 10px;
+}
+
+.fn-purple {
+    color: #7a4bd8;
+    font-weight: bold;
+}
+
+.fn-red {
+    color: #d00000;
+    font-weight: bold;
+}
+
+/* ===============================
+   APPENDIX COLLAPSIBLE
+   =============================== */
+
+.collapse-button {
+    width: 100%;
+    padding: 10px;
+    background: #e8dcc2;
+    border: none;
+    border-radius: 8px;
+    font-family: "Cinzel", serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.collapse-content {
+    display: none;
+    margin-top: 15px;
+}
+
+.collapse-content.open {
+    display: block;
+}
+
+/* Tables */
+.cp-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.cp-table th,
+.cp-table td {
+    border: 1px solid #d6c7a8;
+    padding: 6px;
+    text-align: center;
+}
+/* ===============================
+   ANIMATIONS
+   =============================== */
+
+/* Slow breathing pulse for valid TOTAL CP */
+@keyframes slowPulse {
+    0%   { transform: scale(1);     opacity: 1; }
+    50%  { transform: scale(1.06);  opacity: 0.85; }
+    100% { transform: scale(1);     opacity: 1; }
+}
+
+.valid-total {
+    animation: slowPulse 2.8s ease-in-out infinite;
+    color: #7a4bd8;
+}
+
+/* Fast urgent pulse for invalid TOTAL CP */
+@keyframes fastPulse {
+    0%   { transform: scale(1);     opacity: 1; }
+    50%  { transform: scale(1.12);  opacity: 0.6; }
+    100% { transform: scale(1);     opacity: 1; }
+}
+
+.invalid-total {
+    animation: fastPulse 0.7s ease-in-out infinite;
+    color: #d00000 !important;
+}
+
+/* ===============================
+   HARDMODE GLOW
+   =============================== */
+
+.hardmode-active {
+    color: #cfa400;
+    text-shadow: 0 0 6px rgba(207, 164, 0, 0.6);
+}
+
+/* ===============================
+   BUTTON + INTERACTION POLISH
+   =============================== */
+
+.collapse-button:hover {
+    background: #f0e4c8;
+    box-shadow: 0 0 6px rgba(0,0,0,0.15);
+}
+
+input[type="range"]:hover {
+    filter: brightness(1.1);
+}
+
+.player-level-input:hover {
+    border-color: #7a4bd8;
+}
+
+/* ===============================
+   RESPONSIVE TWEAKS
+   =============================== */
+
+@media (max-width: 600px) {
+    .split-container {
+        flex-direction: column;
+    }
+
+    .player-level-row label {
+        width: 40px;
+    }
+
+    .total-value {
+        font-size: 1.4rem;
+    }
+}
+
+/* ===============================
+   EXTRA POLISH
+   =============================== */
+
+/* Slight card hover lift */
+.card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.15s ease;
+}
+
+/* Appendix table spacing */
+.cp-table th {
+    background: #f3ead7;
+    font-weight: bold;
+}
+
+.cp-table tr:nth-child(even) {
+    background: #faf6ef;
+}
+
+/* Footnote spacing */
+.footnotes li {
+    line-height: 1.4;
+}
+
+/* Range display emphasis */
+.range-display {
+    font-weight: 600;
+    color: #4a3a2a;
+}

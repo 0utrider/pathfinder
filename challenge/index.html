@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge Point Calculator</title>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" href="favicon.ico">
+    <link rel="manifest" href="site.webmanifest">
+</head>
+
+<body>
+
+    <!-- Header / Logo -->
+    <header class="page-header">
+        <img src="img/icon.webp" alt="Site Logo" class="site-logo">
+        <h1>Challenge Point Calculator</h1>
+    </header>
+
+    <main>
+
+        <!-- CARD 1: General Information -->
+        <section class="card">
+            <h2>General Information</h2>
+            <p>
+                This tool is for Pathfinder 2e Organized Play (Pathfinder Society).<br>
+                Note: for Starfinder 2e (Starfinder Society), the challenge point system has been removed.
+                See <a href="https://lorespire.paizo.com/tiki-index.php?page=Guide-to-Organized-Play:-Starfinder-Society---Second-Edition#Adjusting_Difficulty" target="_blank">
+                SFS2: Adjusting Difficulty</a>.
+            </p>
+        </section>
+
+        <!-- CARD 2: Party Information -->
+        <section class="card">
+            <h2>Party Information</h2>
+
+            <div class="split-container">
+
+                <!-- LEFT SIDE: USER INPUT -->
+                <div class="input-side">
+
+                    <!-- Level Range -->
+                    <label class="input-label">Level Range</label>
+                    <div class="dual-slider-container" id="levelRangeContainer">
+                        <input type="range" id="levelMin" min="1" max="20" value="1">
+                        <input type="range" id="levelMax" min="1" max="20" value="4">
+                        <div id="levelRangeDisplay" class="range-display">1 – 4</div>
+                    </div>
+
+                    <!-- Number of Players -->
+                    <label class="input-label">No. of Players</label>
+                    <input type="range" id="numPlayers" min="2" max="6" value="4">
+                    <div id="numPlayersDisplay" class="range-display">4 Players</div>
+
+                    <!-- Player Levels -->
+                    <div id="playerLevelContainer">
+                        <!-- JS will dynamically generate P1–P6 boxes -->
+                    </div>
+
+                    <!-- NPC Pregens -->
+                    <label class="input-label">NPC Pregens</label>
+                    <input type="range" id="numPregens" min="0" max="2" value="0">
+                    <div id="numPregensDisplay" class="range-display">0 Pregens</div>
+
+                </div>
+
+                <!-- RIGHT SIDE: CALCULATED OUTPUT -->
+                <div class="output-side">
+
+                    <div class="output-row">
+                        <span>CP from PCs:</span>
+                        <span id="cpFromPCs" class="output-value">--</span>
+                    </div>
+
+                    <div class="output-row">
+                        <span>NPC Pregens:</span>
+                        <span id="cpPregens" class="output-value greyed">--</span>
+                    </div>
+
+                    <div class="output-row" id="hardmodeRow" style="display:none;">
+                        <span>Hardmode:</span>
+                        <span id="cpHardmode" class="output-value hardmode-highlight">+0</span>
+                    </div>
+
+                    <div class="output-row total-row">
+                        <span><strong>TOTAL CP:</strong></span>
+                        <span id="totalCP" class="total-value">--</span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CARD 3: Additional Information -->
+        <section class="card">
+            <h2>Additional Information</h2>
+
+            <ul class="footnotes">
+
+                <li id="footnote1">
+                    Parties of 2 Players are only legal in scenarios with a minimum level of 5 or lower.
+                </li>
+
+                <li id="footnote2">
+                    For parties with only 2–3 Players, 1–2 NPC Pregens may be played by the Players or GM in Scenarios with a minimum level of 5 or below.
+                </li>
+
+                <li id="footnote3">
+                    Scenarios are designed for 4 PCs; in Scenarios with a minimum level of 6 or higher 3 PCs are allowed to play in <em>hardmode</em> if all players agree.
+                    Players are cautioned that this will increase the difficulty and risk.
+                </li>
+
+                <li id="footnote4">
+                    Parties with up to 15 CP always play the lower level range. Parties with 19+ CP always play the higher range.
+                    Parties with 16–18 CP only play the higher range if they have up to 4 PCs, while parties with 5+ PCs play the lower level range.
+                </li>
+
+            </ul>
+        </section>
+
+        <!-- CARD 4: Appendix -->
+        <section class="card collapsible">
+            <button id="appendixToggle" class="collapse-button">Appendix</button>
+
+            <div id="appendixContent" class="collapse-content">
+
+                <h2>Appendix</h2>
+
+                <!-- Acronyms -->
+                <h3>Acronyms</h3>
+                <ul>
+                    <li>🛡️ CP – Challenge Points</li>
+                    <li>🧭 PC – Player Characters</li>
+                    <li>📜 PFS – Pathfinder Society</li>
+                </ul>
+
+                <!-- Glossary -->
+                <h3>Glossary</h3>
+                <ul>
+                    <li>📘 Pregens – Pregenerated Characters, also known as Iconic Characters.</li>
+                </ul>
+
+                <!-- Challenge Point Table -->
+                <h3>Challenge Point Table</h3>
+                <table class="cp-table">
+                    <thead>
+                        <tr>
+                            <th>Character Level</th>
+                            <th>Challenge Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Lowest allowed level</td><td>+2</td></tr>
+                        <tr><td>Lowest +1</td><td>+3</td></tr>
+                        <tr><td>Lowest +2</td><td>+4</td></tr>
+                        <tr><td>Lowest +3</td><td>+6</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- NPC Pregens Table -->
+                <h3>NPC Pregens Table</h3>
+                <table class="cp-table">
+                    <thead>
+                        <tr>
+                            <th>Scenario Min Level</th>
+                            <th>Players</th>
+                            <th>CP</th>
+                            <th>Modifier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td rowspan="4">1</td><td>2</td><td>&lt;8</td><td>+4</td></tr>
+                        <tr><td>2</td><td>8+</td><td>+8</td></tr>
+                        <tr><td>3</td><td>&lt;12</td><td>+2</td></tr>
+                        <tr><td>3</td><td>12+</td><td>+4</td></tr>
+
+                        <tr><td rowspan="4">3</td><td>2</td><td>&lt;8</td><td>+4</td></tr>
+                        <tr><td>2</td><td>8+</td><td>+8</td></tr>
+                        <tr><td>3</td><td>&lt;12</td><td>+2</td></tr>
+                        <tr><td>3</td><td>12+</td><td>+4</td></tr>
+
+                        <tr><td rowspan="2">5</td><td>2</td><td>Any</td><td>+4</td></tr>
+                        <tr><td>3</td><td>Any</td><td>+2</td></tr>
+
+                        <tr><td rowspan="2">7+</td><td>3</td><td>&lt;12</td><td>+2</td></tr>
+                        <tr><td>3</td><td>12+</td><td>+4</td></tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JS -->
+    <script src="script.js"></script>
+
+</body>
+</html>
