@@ -1,5 +1,5 @@
 /* ===============================
-   GLOBAL PAGE STYLES
+   GLOBAL BASE
    =============================== */
 
 body {
@@ -8,24 +8,73 @@ body {
     font-family: "Segoe UI", Tahoma, sans-serif;
     background: #f4f0e8;
     color: #2a1f1a;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .page-header {
-    text-align: center;
     padding: 20px 0;
+    text-align: center;
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: min(900px, 90%);
+    margin: 0 auto;
 }
 
 .site-logo {
     width: 80px;
     height: auto;
-    display: block;
-    margin: 0 auto 10px;
 }
 
-h1, h2, h3 {
-    font-family: "Cinzel", serif;
-    margin: 0 0 10px;
-    color: #3a2a20;
+.theme-toggle {
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.theme-toggle input {
+    margin-right: 6px;
+}
+
+/* ===============================
+   DARK MODE
+   =============================== */
+
+body.dark-mode {
+    background: #1e1b18;
+    color: #e8e0d8;
+}
+
+body.dark-mode .card {
+    background: #2a2623;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+}
+
+body.dark-mode input[type="number"],
+body.dark-mode input[type="range"] {
+    background: #3a3531;
+    color: #f0e8df;
+    border-color: #6a5a4a;
+}
+
+body.dark-mode .range-display {
+    color: #e8e0d8;
+}
+
+body.dark-mode .collapse-button {
+    background: #3a3531;
+    color: #e8e0d8;
+}
+
+body.dark-mode .cp-table th {
+    background: #3a3531;
+}
+
+body.dark-mode .cp-table tr:nth-child(even) {
+    background: #2f2a27;
 }
 
 /* ===============================
@@ -39,16 +88,18 @@ h1, h2, h3 {
     margin: 20px auto;
     width: min(900px, 90%);
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card h2 {
+    font-family: "Cinzel", serif;
     border-bottom: 2px solid #d6c7a8;
     padding-bottom: 6px;
     margin-bottom: 15px;
 }
 
 /* ===============================
-   SPLIT CONTAINER (Card 2)
+   SPLIT CONTAINER
    =============================== */
 
 .split-container {
@@ -73,15 +124,52 @@ h1, h2, h3 {
     margin-bottom: 5px;
 }
 
-.player-level-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
+.range-display {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #4a3a2a;
 }
 
-.player-level-row label {
-    width: 30px;
+/* ===============================
+   SLIDERS
+   =============================== */
+
+input[type="range"] {
+    width: 100%;
+    margin: 6px 0;
+    accent-color: #7a4bd8;
+}
+
+/* ===============================
+   PC LEVEL GRID (3×2)
+   =============================== */
+
+.player-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.player-box {
+    display: none; /* JS reveals active ones */
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    background: #f8f4ec;
+    border: 1px solid #d6c7a8;
+}
+
+body.dark-mode .player-box {
+    background: #332f2b;
+    border-color: #6a5a4a;
+}
+
+.player-box-label {
     font-weight: bold;
+    margin-bottom: 4px;
 }
 
 .player-level-input {
@@ -98,22 +186,6 @@ h1, h2, h3 {
 }
 
 /* ===============================
-   SLIDERS
-   =============================== */
-
-input[type="range"] {
-    width: 100%;
-    margin: 6px 0;
-    accent-color: #7a4bd8; /* Purple theme */
-}
-
-.range-display {
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-    color: #4a3a2a;
-}
-
-/* ===============================
    OUTPUT SIDE
    =============================== */
 
@@ -121,7 +193,6 @@ input[type="range"] {
     display: flex;
     justify-content: space-between;
     padding: 6px 0;
-    border-bottom: 1px solid #e2d8c5;
 }
 
 .output-value {
@@ -133,20 +204,12 @@ input[type="range"] {
 }
 
 .pregen-active {
-    color: #2a7a2a;
+    color: #7a4bd8;
 }
 
-.hardmode-highlight,
-.hardmode-active {
+.hardmode-highlight {
     color: #cfa400;
     font-weight: bold;
-}
-
-/* TOTAL CP */
-.total-row {
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 2px solid #b8a88a;
 }
 
 .total-value {
@@ -155,12 +218,18 @@ input[type="range"] {
     color: #7a4bd8;
 }
 
+.play-direction {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
 /* ===============================
-   FOOTNOTE HIGHLIGHTS
+   FOOTNOTES
    =============================== */
 
 .footnotes li {
     margin-bottom: 10px;
+    line-height: 1.4;
 }
 
 .fn-purple {
@@ -174,7 +243,7 @@ input[type="range"] {
 }
 
 /* ===============================
-   APPENDIX COLLAPSIBLE
+   APPENDIX
    =============================== */
 
 .collapse-button {
@@ -197,6 +266,10 @@ input[type="range"] {
     display: block;
 }
 
+.appendix-spacer {
+    height: 20px;
+}
+
 /* Tables */
 .cp-table {
     width: 100%;
@@ -210,6 +283,29 @@ input[type="range"] {
     padding: 6px;
     text-align: center;
 }
+
+.cp-table th {
+    background: #f3ead7;
+}
+
+.cp-table tr:nth-child(even) {
+    background: #faf6ef;
+}
+
+/* ===============================
+   RESPONSIVE
+   =============================== */
+
+@media (max-width: 600px) {
+    .split-container {
+        flex-direction: column;
+    }
+
+    .total-value {
+        font-size: 1.4rem;
+    }
+}
+
 /* ===============================
    ANIMATIONS
    =============================== */
@@ -239,76 +335,89 @@ input[type="range"] {
 }
 
 /* ===============================
-   HARDMODE GLOW
+   INTERACTION POLISH
    =============================== */
 
-.hardmode-active {
-    color: #cfa400;
-    text-shadow: 0 0 6px rgba(207, 164, 0, 0.6);
-}
-
-/* ===============================
-   BUTTON + INTERACTION POLISH
-   =============================== */
-
-.collapse-button:hover {
-    background: #f0e4c8;
-    box-shadow: 0 0 6px rgba(0,0,0,0.15);
-}
-
-input[type="range"]:hover {
-    filter: brightness(1.1);
+input[type="number"]:focus,
+input[type="range"]:focus {
+    outline: 2px solid #7a4bd8;
+    outline-offset: 2px;
 }
 
 .player-level-input:hover {
     border-color: #7a4bd8;
 }
 
-/* ===============================
-   RESPONSIVE TWEAKS
-   =============================== */
+.collapse-button:hover {
+    background: #f0e4c8;
+    box-shadow: 0 0 6px rgba(0,0,0,0.15);
+}
 
-@media (max-width: 600px) {
-    .split-container {
-        flex-direction: column;
-    }
-
-    .player-level-row label {
-        width: 40px;
-    }
-
-    .total-value {
-        font-size: 1.4rem;
-    }
+body.dark-mode .collapse-button:hover {
+    background: #4a443f;
 }
 
 /* ===============================
-   EXTRA POLISH
+   PREGEN DETAIL
    =============================== */
 
-/* Slight card hover lift */
-.card:hover {
-    transform: translateY(-2px);
-    transition: transform 0.15s ease;
-}
-
-/* Appendix table spacing */
-.cp-table th {
-    background: #f3ead7;
+.pregen-detail {
+    margin-top: -4px;
+    margin-bottom: 10px;
     font-weight: bold;
 }
 
-.cp-table tr:nth-child(even) {
-    background: #faf6ef;
+/* ===============================
+   PLAY UP / PLAY DOWN
+   =============================== */
+
+.play-direction {
+    margin-top: 4px;
+    color: #7a4bd8;
 }
 
-/* Footnote spacing */
-.footnotes li {
-    line-height: 1.4;
+body.dark-mode .play-direction {
+    color: #b79cff;
 }
 
-/* Range display emphasis */
-.range-display {
-    font-weight: 600;
-    color: #4a3a2a;
+/* ===============================
+   FOOTNOTE 4 SPANS
+   =============================== */
+
+.fn4-part {
+    display: none;
 }
+
+/* ===============================
+   DARK MODE ACCENTS
+   =============================== */
+
+body.dark-mode .fn-purple {
+    color: #b79cff;
+}
+
+body.dark-mode .fn-red {
+    color: #ff6b6b;
+}
+
+body.dark-mode .total-value {
+    color: #b79cff;
+}
+
+/* ===============================
+   SPACING REFINEMENTS
+   =============================== */
+
+.output-row {
+    margin-bottom: 4px;
+}
+
+.total-row {
+    margin-top: 10px;
+}
+
+.play-row {
+    margin-top: 6px;
+}
+
+/* Appendix spacing already handled in Part 1 */

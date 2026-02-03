@@ -17,11 +17,20 @@
 </head>
 
 <body>
-
-    <!-- Header / Logo -->
+    <!-- Header / Logo + Theme Toggle -->
     <header class="page-header">
-        <img src="img/icon.webp" alt="Site Logo" class="site-logo">
-        <h1>Challenge Point Calculator</h1>
+        <div class="header-inner">
+            <div class="header-left">
+                <img src="img/icon.webp" alt="Site Logo" class="site-logo">
+                <h1>Challenge Point Calculator</h1>
+            </div>
+            <div class="header-right">
+                <label class="theme-toggle">
+                    <input type="checkbox" id="themeToggle">
+                    <span id="themeToggleLabel">Dark Mode</span>
+                </label>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -59,15 +68,19 @@
                     <input type="range" id="numPlayers" min="2" max="6" value="4">
                     <div id="numPlayersDisplay" class="range-display">4 Players</div>
 
-                    <!-- Player Levels -->
-                    <div id="playerLevelContainer">
-                        <!-- JS will dynamically generate P1–P6 boxes -->
+                    <!-- PC Levels -->
+                    <label class="input-label">PC Levels</label>
+                    <div id="playerLevelContainer" class="player-grid">
+                        <!-- JS will dynamically generate P1–P6 boxes in a 3x2 grid -->
                     </div>
 
                     <!-- NPC Pregens -->
                     <label class="input-label">NPC Pregens</label>
                     <input type="range" id="numPregens" min="0" max="2" value="0">
                     <div id="numPregensDisplay" class="range-display">0 Pregens</div>
+                    <div id="numPregensDetail" class="range-display pregen-detail" style="display:none;">
+                        <!-- e.g., "2 Pregens, Level 3" -->
+                    </div>
 
                 </div>
 
@@ -94,6 +107,11 @@
                         <span id="totalCP" class="total-value">--</span>
                     </div>
 
+                    <div class="output-row play-row">
+                        <span>Result:</span>
+                        <span id="playDirection" class="play-direction">--</span>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -118,8 +136,18 @@
                 </li>
 
                 <li id="footnote4">
-                    Parties with up to 15 CP always play the lower level range. Parties with 19+ CP always play the higher range.
-                    Parties with 16–18 CP only play the higher range if they have up to 4 PCs, while parties with 5+ PCs play the lower level range.
+                    <span id="fn4_low" class="fn4-part" style="display:none;">
+                        Parties with up to 15 CP always play the lower level range.
+                    </span>
+                    <span id="fn4_mid_up" class="fn4-part" style="display:none;">
+                        Parties with 16–18 CP play the higher range if they have up to 4 PCs.
+                    </span>
+                    <span id="fn4_mid_down" class="fn4-part" style="display:none;">
+                        Parties with 16–18 CP play the lower level range if they have 5+ PCs.
+                    </span>
+                    <span id="fn4_high" class="fn4-part" style="display:none;">
+                        Parties with 19+ CP always play the higher range.
+                    </span>
                 </li>
 
             </ul>
@@ -141,11 +169,17 @@
                     <li>📜 PFS – Pathfinder Society</li>
                 </ul>
 
+                <!-- Spacer -->
+                <div class="appendix-spacer"></div>
+
                 <!-- Glossary -->
                 <h3>Glossary</h3>
                 <ul>
                     <li>📘 Pregens – Pregenerated Characters, also known as Iconic Characters.</li>
                 </ul>
+
+                <!-- Spacer -->
+                <div class="appendix-spacer"></div>
 
                 <!-- Challenge Point Table -->
                 <h3>Challenge Point Table</h3>
@@ -164,6 +198,9 @@
                     </tbody>
                 </table>
 
+                <!-- Spacer -->
+                <div class="appendix-spacer"></div>
+
                 <!-- NPC Pregens Table -->
                 <h3>NPC Pregens Table</h3>
                 <table class="cp-table">
@@ -172,25 +209,30 @@
                             <th>Scenario Min Level</th>
                             <th>Players</th>
                             <th>CP</th>
+                            <th>Pregens</th>
                             <th>Modifier</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td rowspan="4">1</td><td>2</td><td>&lt;8</td><td>+4</td></tr>
-                        <tr><td>2</td><td>8+</td><td>+8</td></tr>
-                        <tr><td>3</td><td>&lt;12</td><td>+2</td></tr>
-                        <tr><td>3</td><td>12+</td><td>+4</td></tr>
+                        <!-- Scenario Min 1 -->
+                        <tr><td rowspan="4">1</td><td>2</td><td>&lt;8</td><td>2 lvl 1</td><td>+4</td></tr>
+                        <tr><td>2</td><td>8+</td><td>2 lvl 3</td><td>+8</td></tr>
+                        <tr><td>3</td><td>&lt;12</td><td>1 lvl 1</td><td>+2</td></tr>
+                        <tr><td>3</td><td>12+</td><td>1 lvl 3</td><td>+4</td></tr>
 
-                        <tr><td rowspan="4">3</td><td>2</td><td>&lt;8</td><td>+4</td></tr>
-                        <tr><td>2</td><td>8+</td><td>+8</td></tr>
-                        <tr><td>3</td><td>&lt;12</td><td>+2</td></tr>
-                        <tr><td>3</td><td>12+</td><td>+4</td></tr>
+                        <!-- Scenario Min 3 -->
+                        <tr><td rowspan="4">3</td><td>2</td><td>&lt;8</td><td>2 lvl 3</td><td>+4</td></tr>
+                        <tr><td>2</td><td>8+</td><td>2 lvl 5</td><td>+8</td></tr>
+                        <tr><td>3</td><td>&lt;12</td><td>1 lvl 3</td><td>+2</td></tr>
+                        <tr><td>3</td><td>12+</td><td>1 lvl 5</td><td>+4</td></tr>
 
-                        <tr><td rowspan="2">5</td><td>2</td><td>Any</td><td>+4</td></tr>
-                        <tr><td>3</td><td>Any</td><td>+2</td></tr>
+                        <!-- Scenario Min 5 -->
+                        <tr><td rowspan="2">5</td><td>2</td><td>Any</td><td>2 lvl 5</td><td>+4</td></tr>
+                        <tr><td>3</td><td>Any</td><td>1 lvl 5</td><td>+2</td></tr>
 
-                        <tr><td rowspan="2">7+</td><td>3</td><td>&lt;12</td><td>+2</td></tr>
-                        <tr><td>3</td><td>12+</td><td>+4</td></tr>
+                        <!-- Scenario Min 7+ -->
+                        <tr><td rowspan="2">7+</td><td>3</td><td>&lt;12</td><td>none</td><td>+2</td></tr>
+                        <tr><td>3</td><td>12+</td><td>none</td><td>+4</td></tr>
                     </tbody>
                 </table>
 
@@ -199,8 +241,6 @@
 
     </main>
 
-    <!-- JS -->
     <script src="script.js"></script>
-
 </body>
 </html>

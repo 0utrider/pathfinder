@@ -1,6 +1,8 @@
 // ===============================
 // DOM REFERENCES
 // ===============================
+
+// Sliders
 const levelMin = document.getElementById("levelMin");
 const levelMax = document.getElementById("levelMax");
 const levelRangeDisplay = document.getElementById("levelRangeDisplay");
@@ -10,17 +12,18 @@ const numPlayersDisplay = document.getElementById("numPlayersDisplay");
 
 const numPregens = document.getElementById("numPregens");
 const numPregensDisplay = document.getElementById("numPregensDisplay");
+const numPregensDetail = document.getElementById("numPregensDetail");
 
+// Player grid container
 const playerLevelContainer = document.getElementById("playerLevelContainer");
 
+// Output fields
 const cpFromPCs = document.getElementById("cpFromPCs");
 const cpPregens = document.getElementById("cpPregens");
 const cpHardmode = document.getElementById("cpHardmode");
 const hardmodeRow = document.getElementById("hardmodeRow");
 const totalCP = document.getElementById("totalCP");
-
-const appendixToggle = document.getElementById("appendixToggle");
-const appendixContent = document.getElementById("appendixContent");
+const playDirection = document.getElementById("playDirection");
 
 // Footnotes
 const footnote1 = document.getElementById("footnote1");
@@ -28,16 +31,53 @@ const footnote2 = document.getElementById("footnote2");
 const footnote3 = document.getElementById("footnote3");
 const footnote4 = document.getElementById("footnote4");
 
+// Footnote 4 spans
+const fn4_low = document.getElementById("fn4_low");
+const fn4_mid_up = document.getElementById("fn4_mid_up");
+const fn4_mid_down = document.getElementById("fn4_mid_down");
+const fn4_high = document.getElementById("fn4_high");
+
+// Appendix
+const appendixToggle = document.getElementById("appendixToggle");
+const appendixContent = document.getElementById("appendixContent");
+
+// Theme toggle
+const themeToggle = document.getElementById("themeToggle");
+const themeToggleLabel = document.getElementById("themeToggleLabel");
+
+
 // ===============================
 // INITIAL SETUP
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-    generatePlayerLevelInputs(numPlayers.value);
+    generatePlayerGrid();
     updateLevelRangeDisplay();
     updateNumPlayersDisplay();
     updateNumPregensDisplay();
+    applyThemeFromStorage();
     validateAll();
 });
+
+
+// ===============================
+// THEME TOGGLE
+// ===============================
+themeToggle.addEventListener("change", () => {
+    const dark = themeToggle.checked;
+    document.body.classList.toggle("dark-mode", dark);
+    themeToggleLabel.textContent = dark ? "Light Mode" : "Dark Mode";
+    localStorage.setItem("cpcalc-theme", dark ? "dark" : "light");
+});
+
+function applyThemeFromStorage() {
+    const saved = localStorage.getItem("cpcalc-theme");
+    if (saved === "dark") {
+        themeToggle.checked = true;
+        document.body.classList.add("dark-mode");
+        themeToggleLabel.textContent = "Light Mode";
+    }
+}
+
 
 // ===============================
 // APPENDIX TOGGLE
@@ -46,17 +86,19 @@ appendixToggle.addEventListener("click", () => {
     appendixContent.classList.toggle("open");
 });
 
+
 // ===============================
-// PLAYER LEVEL INPUT GENERATION
+// PLAYER GRID GENERATION (3×2)
 // ===============================
-function generatePlayerLevelInputs(count) {
+function generatePlayerGrid() {
     playerLevelContainer.innerHTML = "";
 
-    for (let i = 1; i <= count; i++) {
+    for (let i = 1; i <= 6; i++) {
         const wrapper = document.createElement("div");
-        wrapper.classList.add("player-level-row");
+        wrapper.classList.add("player-box");
 
-        const label = document.createElement("label");
+        const label = document.createElement("div");
+        label.classList.add("player-box-label");
         label.textContent = `P${i}`;
 
         const input = document.createElement("input");
@@ -73,7 +115,19 @@ function generatePlayerLevelInputs(count) {
         wrapper.appendChild(input);
         playerLevelContainer.appendChild(wrapper);
     }
+
+    updatePlayerGridVisibility();
 }
+
+function updatePlayerGridVisibility() {
+    const count = parseInt(numPlayers.value);
+    const boxes = playerLevelContainer.querySelectorAll(".player-box");
+
+    boxes.forEach((box, index) => {
+        box.style.display = index < count ? "flex" : "none";
+    });
+}
+
 
 // ===============================
 // SLIDER DISPLAY UPDATES
@@ -84,11 +138,14 @@ function updateLevelRangeDisplay() {
 
 function updateNumPlayersDisplay() {
     numPlayersDisplay.textContent = `${numPlayers.value} Players`;
+    updatePlayerGridVisibility();
 }
 
 function updateNumPregensDisplay() {
     numPregensDisplay.textContent = `${numPregens.value} Pregens`;
+    numPregensDetail.style.display = "none"; // Will be filled in later by CP logic
 }
+
 
 // ===============================
 // EVENT LISTENERS
@@ -107,7 +164,6 @@ levelMax.addEventListener("input", () => {
 
 numPlayers.addEventListener("input", () => {
     updateNumPlayersDisplay();
-    generatePlayerLevelInputs(numPlayers.value);
     validateAll();
 });
 
@@ -116,211 +172,74 @@ numPregens.addEventListener("input", () => {
     validateAll();
 });
 
+
 // ===============================
 // LEVEL RANGE RULES
 // ===============================
 // Must satisfy:
 // - min ≤ max
 // - max ≤ min + 3
-// - spread can be 0 (single-level scenario)
 function enforceLevelRangeRules() {
     let min = parseInt(levelMin.value);
     let max = parseInt(levelMax.value);
 
-    // Ensure min ≤ max
     if (min > max) {
         max = min;
         levelMax.value = max;
     }
 
-    // Ensure spread ≤ 3
     if (max > min + 3) {
         max = min + 3;
         levelMax.value = max;
     }
 }
 
+
 // ===============================
-// VALIDATION + INVALID STATE HANDLING
+// VALIDATION WRAPPER (logic added later)
 // ===============================
 function validateAll() {
-    const min = parseInt(levelMin.value);
-    const max = parseInt(levelMax.value);
+    // Part 2 will fill in:
+    // - Player level legality
+    // - Party legality
+    // - Hardmode detection
+    // - Footnote updates
+    // - CP calculation
+    // - Play Up / Play Down
+    // - NPC Pregen level extraction
 
-    let valid = true;
-
-    // Validate player levels
-    const playerInputs = document.querySelectorAll(".player-level-input");
-    playerInputs.forEach(input => {
-        const val = parseInt(input.value);
-        if (val < min || val > max) {
-            input.classList.add("invalid");
-            valid = false;
-        } else {
-            input.classList.remove("invalid");
-        }
-    });
-
-    // If invalid, show red "--" and fast pulse
-    if (!valid) {
-        showInvalidState();
-        return;
-    }
-
-    // If valid so far, proceed to CP calculation (in Part 2)
-    // For now, just clear invalid state
-    clearInvalidState();
-}
-
-// ===============================
-// INVALID STATE DISPLAY
-// ===============================
-function showInvalidState() {
+    // For now, just clear outputs
     totalCP.textContent = "--";
-    totalCP.classList.add("invalid-total");
-    totalCP.classList.remove("valid-total");
+    playDirection.textContent = "--";
 }
 
-// ===============================
-// CLEAR INVALID STATE
-// ===============================
-function clearInvalidState() {
-    totalCP.classList.remove("invalid-total");
-    // CP calculation will set valid-total later
-}
-// ===============================
-// PART 2: FOOTNOTES, PARTY RULES, HARDMODE
-// ===============================
-
-// Helper: get numeric values
-function getMinLevel() {
-    return parseInt(levelMin.value);
-}
-
-function getMaxLevel() {
-    return parseInt(levelMax.value);
-}
-
-function getNumPlayers() {
-    return parseInt(numPlayers.value);
-}
-
-function getNumPregens() {
-    return parseInt(numPregens.value);
-}
 
 // ===============================
-// FOOTNOTE HIGHLIGHT LOGIC
+// PART 2: VALIDATION + FOOTNOTES + PARTY RULES
 // ===============================
-function updateFootnotes() {
-    const min = getMinLevel();
-    const players = getNumPlayers();
-    const pregens = getNumPregens();
 
-    // Reset classes
-    [footnote1, footnote2, footnote3, footnote4].forEach(fn => {
-        fn.classList.remove("fn-purple", "fn-red");
-    });
-    levelRangeDisplay.classList.remove("fn-red");
-    levelMin.classList.remove("fn-red");
-    levelMax.classList.remove("fn-red");
+// Convenience getters
+function getMinLevel() { return parseInt(levelMin.value); }
+function getMaxLevel() { return parseInt(levelMax.value); }
+function getNumPlayers() { return parseInt(numPlayers.value); }
+function getNumPregens() { return parseInt(numPregens.value); }
 
-    // Footnote 1:
-    // "Parties of 2 Players are only legal in scenarios with a minimum level of 5 or lower."
-    // Purple if players = 2
-    // Red (footnote + level range text + slider) if players = 2 AND min ≥ 7
-    if (players === 2) {
-        if (min >= 7) {
-            footnote1.classList.add("fn-red");
-            levelRangeDisplay.classList.add("fn-red");
-            levelMin.classList.add("fn-red");
-            levelMax.classList.add("fn-red");
-        } else {
-            footnote1.classList.add("fn-purple");
-        }
-    }
-
-    // Footnote 2:
-    // "For parties with only 2-3 Players, 1-2 NPC Pregens may be played..."
-    // Purple if players ≤ 3, normal if ≥ 4
-    if (players <= 3) {
-        footnote2.classList.add("fn-purple");
-    }
-
-    // Footnote 3:
-    // "Scenarios are designed for 4 PCs; in Scenarios with a minimum level of 6 or higher
-    // 3 PCs are allowed to play in hardmode if all players agree..."
-    // Purple if players = 3 and pregens = 0 and min ≥ 6
-    // 2 players with no pregens is never allowed (handled by legality)
-    if (players === 3 && pregens === 0 && min >= 6) {
-        footnote3.classList.add("fn-purple");
-    }
-
-    // Footnote 4 is informational; we’ll highlight it later if desired based on CP bands.
-}
 
 // ===============================
-// PARTY LEGALITY & HARDMODE
+// PLAYER LEVEL VALIDATION
 // ===============================
-function checkPartyLegality() {
-    const min = getMinLevel();
-    const players = getNumPlayers();
-    const pregens = getNumPregens();
-
-    let legal = true;
-    let hardmodeActive = false;
-
-    // 2 players only legal if min ≤ 5
-    if (players === 2 && min > 5) {
-        legal = false;
-    }
-
-    // 2 players with no pregens is never allowed
-    if (players === 2 && pregens === 0) {
-        legal = false;
-    }
-
-    // 3 players with no pregens and min ≥ 6 is allowed only as hardmode
-    if (players === 3 && pregens === 0 && min >= 6) {
-        hardmodeActive = true;
-    }
-
-    return { legal, hardmodeActive };
-}
-
-// ===============================
-// HARDMODE DISPLAY
-// ===============================
-function updateHardmodeDisplay(hardmodeActive) {
-    if (hardmodeActive) {
-        hardmodeRow.style.display = "flex";
-        cpHardmode.textContent = "+0"; // CP modifier for hardmode itself is 0; it's a flag
-        cpHardmode.classList.add("hardmode-active");
-    } else {
-        hardmodeRow.style.display = "none";
-        cpHardmode.classList.remove("hardmode-active");
-    }
-}
-
-// ===============================
-// EXTEND validateAll WITH PARTY + FOOTNOTES
-// ===============================
-const _originalValidateAll = validateAll;
-validateAll = function () {
+function validatePlayerLevels() {
     const min = getMinLevel();
     const max = getMaxLevel();
-
     let valid = true;
 
-    // Level range rules already enforced structurally, but we can sanity check
-    if (max < min || max > min + 3) {
-        valid = false;
-    }
+    const boxes = playerLevelContainer.querySelectorAll(".player-box");
+    boxes.forEach((box, index) => {
+        if (index >= getNumPlayers()) return; // hidden boxes ignored
 
-    // Validate player levels
-    const playerInputs = document.querySelectorAll(".player-level-input");
-    playerInputs.forEach(input => {
+        const input = box.querySelector("input");
         const val = parseInt(input.value);
+
         if (isNaN(val) || val < min || val > max) {
             input.classList.add("invalid");
             valid = false;
@@ -329,93 +248,211 @@ validateAll = function () {
         }
     });
 
-    // Party legality + hardmode
-    const { legal, hardmodeActive } = checkPartyLegality();
-    if (!legal) {
-        valid = false;
+    return valid;
+}
+
+
+// ===============================
+// PARTY LEGALITY + HARDMODE
+// ===============================
+function checkPartyLegality() {
+    const min = getMinLevel();
+    const players = getNumPlayers();
+    const pregens = getNumPregens();
+
+    let legal = true;
+    let hardmode = false;
+
+    // 2 players only legal if scenario min ≤ 5
+    if (players === 2 && min > 5) legal = false;
+
+    // 2 players must have pregens
+    if (players === 2 && pregens === 0) legal = false;
+
+    // 3 players, no pregens, min ≥ 6 → hardmode allowed
+    if (players === 3 && pregens === 0 && min >= 6) {
+        hardmode = true;
     }
 
-    updateHardmodeDisplay(hardmodeActive);
-    updateFootnotes();
+    return { legal, hardmode };
+}
 
-    if (!valid) {
+
+// ===============================
+// FOOTNOTE 1–3 LOGIC
+// ===============================
+function updateFootnotesBasic() {
+    const min = getMinLevel();
+    const players = getNumPlayers();
+    const pregens = getNumPregens();
+
+    // Reset
+    [footnote1, footnote2, footnote3].forEach(fn =>
+        fn.classList.remove("fn-purple", "fn-red")
+    );
+
+    // Footnote 1
+    if (players === 2) {
+        if (min >= 7) {
+            footnote1.classList.add("fn-red");
+        } else {
+            footnote1.classList.add("fn-purple");
+        }
+    }
+
+    // Footnote 2
+    if (players <= 3) {
+        footnote2.classList.add("fn-purple");
+    }
+
+    // Footnote 3
+    if (players === 3 && pregens === 0 && min >= 6) {
+        footnote3.classList.add("fn-purple");
+    }
+}
+
+
+// ===============================
+// FOOTNOTE 4 DYNAMIC SPANS
+// ===============================
+function updateFootnote4(totalCPValue) {
+    // Hide all spans first
+    [fn4_low, fn4_mid_up, fn4_mid_down, fn4_high].forEach(span => {
+        span.style.display = "none";
+        span.classList.remove("fn-purple");
+    });
+
+    if (isNaN(totalCPValue)) return; // no CP yet → show nothing
+
+    const players = getNumPlayers();
+
+    // ≤15 CP
+    if (totalCPValue <= 15) {
+        fn4_low.style.display = "inline";
+        fn4_low.classList.add("fn-purple");
+        return;
+    }
+
+    // ≥19 CP
+    if (totalCPValue >= 19) {
+        fn4_high.style.display = "inline";
+        fn4_high.classList.add("fn-purple");
+        return;
+    }
+
+    // 16–18 CP band
+    if (totalCPValue >= 16 && totalCPValue <= 18) {
+        if (players <= 4) {
+            fn4_mid_up.style.display = "inline";
+            fn4_mid_up.classList.add("fn-purple");
+        } else {
+            fn4_mid_down.style.display = "inline";
+            fn4_mid_down.classList.add("fn-purple");
+        }
+    }
+}
+
+
+// ===============================
+// INVALID STATE HANDLING
+// ===============================
+function showInvalidState() {
+    totalCP.textContent = "--";
+    playDirection.textContent = "--";
+    totalCP.classList.remove("valid-total");
+    totalCP.classList.add("invalid-total");
+}
+
+function clearInvalidState() {
+    totalCP.classList.remove("invalid-total");
+}
+
+
+// ===============================
+// EXTEND validateAll WITH LOGIC
+// ===============================
+const validateAll_base = validateAll;
+validateAll = function () {
+    const levelsOK = validatePlayerLevels();
+    const { legal, hardmode } = checkPartyLegality();
+
+    updateFootnotesBasic();
+
+    if (!levelsOK || !legal) {
         showInvalidState();
         return;
     }
 
     clearInvalidState();
-    calculateCP(hardmodeActive);
+
+    // Part 3 will compute CP and call updateFootnote4 + playDirection
 };
+
+
 // ===============================
 // PART 3: CP CALCULATION ENGINE
 // ===============================
 
-// ===============================
+// -------------------------------
 // CP FROM PC LEVELS
-// ===============================
+// -------------------------------
 // Challenge Point Table:
 // Lowest allowed level → +2
 // +1 → +3
 // +2 → +4
 // +3 → +6
-// PCs cannot exceed the scenario level range; validation already prevents that.
 
 function getCPForPC(level, minLevel) {
     const diff = level - minLevel;
-
     switch (diff) {
         case 0: return 2;
         case 1: return 3;
         case 2: return 4;
         case 3: return 6;
-        default:
-            // Should never happen due to validation
-            return 0;
+        default: return 0; // Should never happen due to validation
     }
 }
 
-// ===============================
-// NPC PREGEN MODIFIER LOOKUP
-// ===============================
-// Table is encoded exactly as in your FINAL FORM
 
-function getPregenModifier(baseCP, scenarioMin, players) {
-    // Only used when players = 2 or 3
-    if (players >= 4) return 0;
+// -------------------------------
+// NPC PREGEN TABLE (WITH LEVELS)
+// -------------------------------
+const pregenTable = [
+    // Scenario Min 1
+    { min: 1, players: 2, cp: "<8",    pregens: "2 lvl 1", mod: 4 },
+    { min: 1, players: 2, cp: "8+",    pregens: "2 lvl 3", mod: 8 },
+    { min: 1, players: 3, cp: "<12",   pregens: "1 lvl 1", mod: 2 },
+    { min: 1, players: 3, cp: "12+",   pregens: "1 lvl 3", mod: 4 },
 
-    // Rows encoded as objects for clarity
-    const table = [
-        // Scenario Min 1
-        { min: 1, players: 2, cp: "<8", mod: 4 },
-        { min: 1, players: 2, cp: "8+", mod: 8 },
-        { min: 1, players: 3, cp: "<12", mod: 2 },
-        { min: 1, players: 3, cp: "12+", mod: 4 },
+    // Scenario Min 3
+    { min: 3, players: 2, cp: "<8",    pregens: "2 lvl 3", mod: 4 },
+    { min: 3, players: 2, cp: "8+",    pregens: "2 lvl 5", mod: 8 },
+    { min: 3, players: 3, cp: "<12",   pregens: "1 lvl 3", mod: 2 },
+    { min: 3, players: 3, cp: "12+",   pregens: "1 lvl 5", mod: 4 },
 
-        // Scenario Min 3
-        { min: 3, players: 2, cp: "<8", mod: 4 },
-        { min: 3, players: 2, cp: "8+", mod: 8 },
-        { min: 3, players: 3, cp: "<12", mod: 2 },
-        { min: 3, players: 3, cp: "12+", mod: 4 },
+    // Scenario Min 5
+    { min: 5, players: 2, cp: "Any",   pregens: "2 lvl 5", mod: 4 },
+    { min: 5, players: 3, cp: "Any",   pregens: "1 lvl 5", mod: 2 },
 
-        // Scenario Min 5
-        { min: 5, players: 2, cp: "Any", mod: 4 },
-        { min: 5, players: 3, cp: "Any", mod: 2 },
+    // Scenario Min 7+
+    { min: 7, players: 3, cp: "<12",   pregens: "none",    mod: 2 },
+    { min: 7, players: 3, cp: "12+",   pregens: "none",    mod: 4 }
+];
 
-        // Scenario Min 7+
-        { min: 7, players: 3, cp: "<12", mod: 2 },
-        { min: 7, players: 3, cp: "12+", mod: 4 }
-    ];
 
-    // Find matching rows
-    const matches = table.filter(row => {
-        // Scenario min level match (7+ means >=7)
+// -------------------------------
+// PREGEN LOOKUP
+// -------------------------------
+function lookupPregenRow(baseCP, scenarioMin, players) {
+    return pregenTable.find(row => {
+        // Scenario min match
         if (row.min === 7 && scenarioMin < 7) return false;
         if (row.min !== 7 && row.min !== scenarioMin) return false;
 
-        // Player count match
+        // Player count
         if (row.players !== players) return false;
 
-        // CP condition match
+        // CP band
         if (row.cp === "Any") return true;
         if (row.cp === "<8" && baseCP < 8) return true;
         if (row.cp === "8+" && baseCP >= 8) return true;
@@ -424,16 +461,12 @@ function getPregenModifier(baseCP, scenarioMin, players) {
 
         return false;
     });
-
-    if (matches.length === 0) return 0;
-
-    // Only one row should match
-    return matches[0].mod;
 }
 
-// ===============================
+
+// -------------------------------
 // MAIN CP CALCULATION
-// ===============================
+// -------------------------------
 function calculateCP(hardmodeActive) {
     const min = getMinLevel();
     const players = getNumPlayers();
@@ -443,62 +476,127 @@ function calculateCP(hardmodeActive) {
     // 1. CP FROM PCs
     // -------------------------------
     let cpPCs = 0;
-    const playerInputs = document.querySelectorAll(".player-level-input");
+    const boxes = playerLevelContainer.querySelectorAll(".player-box");
 
-    playerInputs.forEach(input => {
-        const lvl = parseInt(input.value);
+    boxes.forEach((box, index) => {
+        if (index >= players) return;
+        const lvl = parseInt(box.querySelector("input").value);
         cpPCs += getCPForPC(lvl, min);
     });
 
     cpFromPCs.textContent = cpPCs;
 
+
     // -------------------------------
-    // 2. NPC PREGEN MODIFIER
+    // 2. NPC PREGEN MODIFIER + LEVEL
     // -------------------------------
     let pregenMod = 0;
+    let pregenLevelText = "";
 
     if (pregens > 0 && players <= 3) {
-        pregenMod = getPregenModifier(cpPCs, min, players);
+        const row = lookupPregenRow(cpPCs, min, players);
+
+        if (row) {
+            pregenMod = row.mod;
+
+            // Extract level from "2 lvl 3"
+            if (row.pregens !== "none") {
+                const parts = row.pregens.split("lvl");
+                const level = parts[1].trim();
+                pregenLevelText = `${pregens} Pregens, Level ${level}`;
+            }
+        }
+
         cpPregens.textContent = `+${pregenMod}`;
         cpPregens.classList.remove("greyed");
         cpPregens.classList.add("pregen-active");
+
+        if (pregenLevelText) {
+            numPregensDetail.textContent = pregenLevelText;
+            numPregensDetail.style.display = "block";
+            numPregensDetail.classList.add("fn-purple");
+        }
+
     } else {
         cpPregens.textContent = "--";
         cpPregens.classList.add("greyed");
         cpPregens.classList.remove("pregen-active");
+
+        numPregensDetail.style.display = "none";
+        numPregensDetail.classList.remove("fn-purple");
     }
+
 
     // -------------------------------
     // 3. HARDMODE MODIFIER
     // -------------------------------
-    // Hardmode does not add CP; it's a flag only.
-    const hardmodeMod = 0;
+    const hardmodeMod = 0; // flag only
+    if (hardmodeActive) {
+        hardmodeRow.style.display = "flex";
+        cpHardmode.textContent = "+0";
+    } else {
+        hardmodeRow.style.display = "none";
+    }
+
 
     // -------------------------------
     // 4. TOTAL CP
     // -------------------------------
     const total = cpPCs + pregenMod + hardmodeMod;
-
     totalCP.textContent = total;
 
-    // -------------------------------
-    // 5. VALID STATE PULSE
-    // -------------------------------
+    // Valid pulse
     totalCP.classList.remove("invalid-total");
     totalCP.classList.add("valid-total");
+
+
+    // -------------------------------
+    // 5. FOOTNOTE 4
+    // -------------------------------
+    updateFootnote4(total);
+
+
+    // -------------------------------
+    // 6. PLAY UP / PLAY DOWN
+    // -------------------------------
+    if (total <= 15) {
+        playDirection.textContent = "Play Down";
+    } else if (total >= 19) {
+        playDirection.textContent = "Play Up";
+    } else {
+        // 16–18 band
+        playDirection.textContent = (players <= 4) ? "Play Up" : "Play Down";
+    }
 }
+
+
+// -------------------------------
+// FINAL VALIDATION HOOK
+// -------------------------------
+const validateAll_part2 = validateAll;
+validateAll = function () {
+    const levelsOK = validatePlayerLevels();
+    const { legal, hardmode } = checkPartyLegality();
+
+    updateFootnotesBasic();
+
+    if (!levelsOK || !legal) {
+        showInvalidState();
+        return;
+    }
+
+    clearInvalidState();
+    calculateCP(hardmode);
+};
+
+
 // ===============================
-// PART 4: ANIMATION + UTILITY HELPERS
+// PART 4: ANIMATION + FINAL GLUE
 // ===============================
 
-// These classes will be defined in CSS:
-// .valid-total   → slow pulse (breathing)
-// .invalid-total → fast pulse (urgent)
-
-// ===============================
+// -------------------------------
 // ANIMATION HELPERS
-// ===============================
-
+// -------------------------------
 function setValidPulse() {
     totalCP.classList.remove("invalid-total");
     void totalCP.offsetWidth; // restart animation
@@ -511,100 +609,43 @@ function setInvalidPulse() {
     totalCP.classList.add("invalid-total");
 }
 
-// ===============================
-// OVERRIDE INVALID STATE HANDLER
-// ===============================
-function showInvalidState() {
-    totalCP.textContent = "--";
-    setInvalidPulse();
-}
-
-// ===============================
-// OVERRIDE CLEAR INVALID STATE
-// ===============================
-function clearInvalidState() {
-    totalCP.classList.remove("invalid-total");
-    // valid pulse will be applied after CP calculation
-}
-
-// ===============================
-// UTILITY: FORCE REPAINT
-// ===============================
-// Used to restart CSS animations cleanly
 function restartAnimation(el) {
     el.classList.remove("valid-total", "invalid-total");
     void el.offsetWidth;
 }
 
-// ===============================
-// HOOK INTO CP CALCULATION
-// ===============================
-// Modify calculateCP to apply valid pulse after computing total
 
-const _originalCalculateCP = calculateCP;
-calculateCP = function (hardmodeActive) {
-    _originalCalculateCP(hardmodeActive);
-
-    // If we got here, the state is valid
-    setValidPulse();
-};
-// ===============================
-// PART 5: FOOTNOTE 4 + FINAL GLUE
-// ===============================
-
-// Footnote 4 logic:
-// - CP ≤ 15 → lower range
-// - CP ≥ 19 → higher range
-// - CP 16–18 → higher range only if PCs ≤ 4
-// - PCs ≥ 5 → always lower range for 16–18
-
-function updateFootnote4(totalCPValue) {
-    footnote4.classList.remove("fn-purple");
-
-    const players = getNumPlayers();
-
-    if (totalCPValue <= 15) {
-        footnote4.classList.add("fn-purple");
-        return;
-    }
-
-    if (totalCPValue >= 19) {
-        footnote4.classList.add("fn-purple");
-        return;
-    }
-
-    // CP 16–18 band
-    if (totalCPValue >= 16 && totalCPValue <= 18) {
-        if (players <= 4) {
-            footnote4.classList.add("fn-purple");
-        }
-    }
-}
-
-// ===============================
-// FINAL HOOK: EXTEND calculateCP AGAIN
-// ===============================
-const _calculateCP_final = calculateCP;
-calculateCP = function (hardmodeActive) {
-    _calculateCP_final(hardmodeActive);
-
-    // After total CP is displayed, apply Footnote 4 logic
-    const total = parseInt(totalCP.textContent);
-    if (!isNaN(total)) {
-        updateFootnote4(total);
-    }
+// -------------------------------
+// OVERRIDE INVALID STATE HANDLERS
+// -------------------------------
+const _showInvalidState = showInvalidState;
+showInvalidState = function () {
+    _showInvalidState();
+    setInvalidPulse();
 };
 
-// ===============================
-// GLOBAL SAFETY GUARD
-// ===============================
-// Ensures recalculation happens whenever ANY input changes
+const _clearInvalidState = clearInvalidState;
+clearInvalidState = function () {
+    _clearInvalidState();
+    // valid pulse will be applied after CP calculation
+};
 
+
+// -------------------------------
+// GLOBAL INPUT LISTENER
+// -------------------------------
 document.addEventListener("input", () => {
     validateAll();
 });
 
-// ===============================
-// END OF SCRIPT
-// ===============================
+
+// -------------------------------
+// FINAL VALIDATION HOOK
+// -------------------------------
+const validateAll_part3 = validateAll;
+validateAll = function () {
+    validateAll_part3();
+    // calculateCP already applies valid pulse when appropriate
+};
+
 console.log("Challenge Point Calculator script loaded.");
