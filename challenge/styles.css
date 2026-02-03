@@ -6,14 +6,22 @@ body {
     margin: 0;
     padding: 0;
     font-family: "Segoe UI", Tahoma, sans-serif;
-    background: #f4f0e8;
-    color: #2a1f1a;
+    background: #1e1b18; /* Dark mode default */
+    color: #e8e0d8;
     transition: background 0.3s ease, color 0.3s ease;
+}
+
+a {
+    color: #b79cff;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #d3c2ff;
 }
 
 .page-header {
     padding: 20px 0;
-    text-align: center;
 }
 
 .header-inner {
@@ -24,8 +32,14 @@ body {
     margin: 0 auto;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .site-logo {
-    width: 80px;
+    width: 70px;
     height: auto;
 }
 
@@ -40,41 +54,20 @@ body {
 }
 
 /* ===============================
-   DARK MODE
+   LIGHT MODE OVERRIDE
    =============================== */
 
-body.dark-mode {
-    background: #1e1b18;
-    color: #e8e0d8;
+body:not(.dark-mode) {
+    background: #f4f0e8;
+    color: #2a1f1a;
 }
 
-body.dark-mode .card {
-    background: #2a2623;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+body:not(.dark-mode) a {
+    color: #7a4bd8;
 }
 
-body.dark-mode input[type="number"],
-body.dark-mode input[type="range"] {
-    background: #3a3531;
-    color: #f0e8df;
-    border-color: #6a5a4a;
-}
-
-body.dark-mode .range-display {
-    color: #e8e0d8;
-}
-
-body.dark-mode .collapse-button {
-    background: #3a3531;
-    color: #e8e0d8;
-}
-
-body.dark-mode .cp-table th {
-    background: #3a3531;
-}
-
-body.dark-mode .cp-table tr:nth-child(even) {
-    background: #2f2a27;
+body:not(.dark-mode) a:hover {
+    color: #9f7df0;
 }
 
 /* ===============================
@@ -82,13 +75,18 @@ body.dark-mode .cp-table tr:nth-child(even) {
    =============================== */
 
 .card {
-    background: #fffdf8;
+    background: #2a2623;
     border-radius: 12px;
     padding: 20px;
     margin: 20px auto;
     width: min(900px, 90%);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
     transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+body:not(.dark-mode) .card {
+    background: #fffdf8;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 .card h2 {
@@ -96,6 +94,11 @@ body.dark-mode .cp-table tr:nth-child(even) {
     border-bottom: 2px solid #d6c7a8;
     padding-bottom: 6px;
     margin-bottom: 15px;
+}
+
+/* Intro spacing */
+.intro-spacer {
+    height: 10px;
 }
 
 /* ===============================
@@ -128,7 +131,6 @@ body.dark-mode .cp-table tr:nth-child(even) {
     font-size: 0.9rem;
     font-weight: 600;
     margin-bottom: 10px;
-    color: #4a3a2a;
 }
 
 /* ===============================
@@ -153,27 +155,28 @@ input[type="range"] {
 }
 
 .player-box {
-    display: none; /* JS reveals active ones */
-    flex-direction: column;
+    display: none;
+    flex-direction: row;
     align-items: center;
-    padding: 10px;
+    justify-content: space-between;
+    padding: 8px 10px;
     border-radius: 8px;
-    background: #f8f4ec;
-    border: 1px solid #d6c7a8;
+    background: #332f2b;
+    border: 1px solid #6a5a4a;
 }
 
-body.dark-mode .player-box {
-    background: #332f2b;
-    border-color: #6a5a4a;
+body:not(.dark-mode) .player-box {
+    background: #f8f4ec;
+    border-color: #d6c7a8;
 }
 
 .player-box-label {
     font-weight: bold;
-    margin-bottom: 4px;
+    margin-right: 6px;
 }
 
 .player-level-input {
-    width: 60px;
+    width: 55px;
     padding: 4px;
     border-radius: 6px;
     border: 1px solid #b8a88a;
@@ -204,6 +207,10 @@ body.dark-mode .player-box {
 }
 
 .pregen-active {
+    color: #b79cff;
+}
+
+body:not(.dark-mode) .pregen-active {
     color: #7a4bd8;
 }
 
@@ -215,12 +222,21 @@ body.dark-mode .player-box {
 .total-value {
     font-size: 1.6rem;
     font-weight: bold;
+    color: #b79cff;
+}
+
+body:not(.dark-mode) .total-value {
     color: #7a4bd8;
 }
 
 .play-direction {
     font-weight: bold;
     font-size: 1.2rem;
+    color: #b79cff;
+}
+
+body:not(.dark-mode) .play-direction {
+    color: #7a4bd8;
 }
 
 /* ===============================
@@ -233,12 +249,16 @@ body.dark-mode .player-box {
 }
 
 .fn-purple {
-    color: #7a4bd8;
+    color: #b79cff;
     font-weight: bold;
 }
 
+body:not(.dark-mode) .fn-purple {
+    color: #7a4bd8;
+}
+
 .fn-red {
-    color: #d00000;
+    color: #ff6b6b;
     font-weight: bold;
 }
 
@@ -249,12 +269,16 @@ body.dark-mode .player-box {
 .collapse-button {
     width: 100%;
     padding: 10px;
-    background: #e8dcc2;
+    background: #3a3531;
     border: none;
     border-radius: 8px;
     font-family: "Cinzel", serif;
     font-size: 1.1rem;
     cursor: pointer;
+}
+
+body:not(.dark-mode) .collapse-button {
+    background: #e8dcc2;
 }
 
 .collapse-content {
@@ -285,10 +309,18 @@ body.dark-mode .player-box {
 }
 
 .cp-table th {
+    background: #3a3531;
+}
+
+body:not(.dark-mode) .cp-table th {
     background: #f3ead7;
 }
 
 .cp-table tr:nth-child(even) {
+    background: #2f2a27;
+}
+
+body:not(.dark-mode) .cp-table tr:nth-child(even) {
     background: #faf6ef;
 }
 
@@ -310,7 +342,6 @@ body.dark-mode .player-box {
    ANIMATIONS
    =============================== */
 
-/* Slow breathing pulse for valid TOTAL CP */
 @keyframes slowPulse {
     0%   { transform: scale(1);     opacity: 1; }
     50%  { transform: scale(1.06);  opacity: 0.85; }
@@ -319,10 +350,8 @@ body.dark-mode .player-box {
 
 .valid-total {
     animation: slowPulse 2.8s ease-in-out infinite;
-    color: #7a4bd8;
 }
 
-/* Fast urgent pulse for invalid TOTAL CP */
 @keyframes fastPulse {
     0%   { transform: scale(1);     opacity: 1; }
     50%  { transform: scale(1.12);  opacity: 0.6; }
@@ -331,8 +360,9 @@ body.dark-mode .player-box {
 
 .invalid-total {
     animation: fastPulse 0.7s ease-in-out infinite;
-    color: #d00000 !important;
+    color: #ff6b6b !important;
 }
+
 
 /* ===============================
    INTERACTION POLISH
@@ -340,45 +370,31 @@ body.dark-mode .player-box {
 
 input[type="number"]:focus,
 input[type="range"]:focus {
-    outline: 2px solid #7a4bd8;
+    outline: 2px solid #b79cff;
     outline-offset: 2px;
 }
 
+body:not(.dark-mode) input[type="number"]:focus,
+body:not(.dark-mode) input[type="range"]:focus {
+    outline: 2px solid #7a4bd8;
+}
+
 .player-level-input:hover {
+    border-color: #b79cff;
+}
+
+body:not(.dark-mode) .player-level-input:hover {
     border-color: #7a4bd8;
 }
 
 .collapse-button:hover {
-    background: #f0e4c8;
-    box-shadow: 0 0 6px rgba(0,0,0,0.15);
-}
-
-body.dark-mode .collapse-button:hover {
     background: #4a443f;
 }
 
-/* ===============================
-   PREGEN DETAIL
-   =============================== */
-
-.pregen-detail {
-    margin-top: -4px;
-    margin-bottom: 10px;
-    font-weight: bold;
+body:not(.dark-mode) .collapse-button:hover {
+    background: #f0e4c8;
 }
 
-/* ===============================
-   PLAY UP / PLAY DOWN
-   =============================== */
-
-.play-direction {
-    margin-top: 4px;
-    color: #7a4bd8;
-}
-
-body.dark-mode .play-direction {
-    color: #b79cff;
-}
 
 /* ===============================
    FOOTNOTE 4 SPANS
@@ -388,21 +404,15 @@ body.dark-mode .play-direction {
     display: none;
 }
 
+
 /* ===============================
-   DARK MODE ACCENTS
+   PLAY UP / PLAY DOWN
    =============================== */
 
-body.dark-mode .fn-purple {
-    color: #b79cff;
+.play-direction {
+    margin-top: 4px;
 }
 
-body.dark-mode .fn-red {
-    color: #ff6b6b;
-}
-
-body.dark-mode .total-value {
-    color: #b79cff;
-}
 
 /* ===============================
    SPACING REFINEMENTS
@@ -419,5 +429,3 @@ body.dark-mode .total-value {
 .play-row {
     margin-top: 6px;
 }
-
-/* Appendix spacing already handled in Part 1 */

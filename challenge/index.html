@@ -16,20 +16,25 @@
     <link rel="manifest" href="site.webmanifest">
 </head>
 
-<body>
-    <!-- Header / Logo + Theme Toggle -->
+<body class="dark-mode">
+    <!-- Header -->
     <header class="page-header">
         <div class="header-inner">
+
+            <!-- Left: Icon + Title -->
             <div class="header-left">
                 <img src="img/icon.webp" alt="Site Logo" class="site-logo">
                 <h1>Challenge Point Calculator</h1>
             </div>
+
+            <!-- Right: Theme Toggle -->
             <div class="header-right">
                 <label class="theme-toggle">
                     <input type="checkbox" id="themeToggle">
-                    <span id="themeToggleLabel">Dark Mode</span>
+                    <span id="themeToggleLabel">Light Mode</span>
                 </label>
             </div>
+
         </div>
     </header>
 
@@ -38,8 +43,14 @@
         <!-- CARD 1: General Information -->
         <section class="card">
             <h2>General Information</h2>
+
             <p>
-                This tool is for Pathfinder 2e Organized Play (Pathfinder Society).<br>
+                This tool is for Pathfinder 2e Organized Play (Pathfinder Society).
+            </p>
+
+            <p class="intro-spacer"></p>
+
+            <p>
                 Note: for Starfinder 2e (Starfinder Society), the challenge point system has been removed.
                 See <a href="https://lorespire.paizo.com/tiki-index.php?page=Guide-to-Organized-Play:-Starfinder-Society---Second-Edition#Adjusting_Difficulty" target="_blank">
                 SFS2: Adjusting Difficulty</a>.
@@ -71,20 +82,17 @@
                     <!-- PC Levels -->
                     <label class="input-label">PC Levels</label>
                     <div id="playerLevelContainer" class="player-grid">
-                        <!-- JS will dynamically generate P1–P6 boxes in a 3x2 grid -->
+                        <!-- JS will generate P1–P6 boxes -->
                     </div>
 
                     <!-- NPC Pregens -->
                     <label class="input-label">NPC Pregens</label>
                     <input type="range" id="numPregens" min="0" max="2" value="0">
                     <div id="numPregensDisplay" class="range-display">0 Pregens</div>
-                    <div id="numPregensDetail" class="range-display pregen-detail" style="display:none;">
-                        <!-- e.g., "2 Pregens, Level 3" -->
-                    </div>
 
                 </div>
 
-                <!-- RIGHT SIDE: CALCULATED OUTPUT -->
+                <!-- RIGHT SIDE: OUTPUT -->
                 <div class="output-side">
 
                     <div class="output-row">
@@ -93,7 +101,7 @@
                     </div>
 
                     <div class="output-row">
-                        <span>NPC Pregens:</span>
+                        <span id="pregenLabel">0 Pregens:</span>
                         <span id="cpPregens" class="output-value greyed">--</span>
                     </div>
 
@@ -136,18 +144,10 @@
                 </li>
 
                 <li id="footnote4">
-                    <span id="fn4_low" class="fn4-part" style="display:none;">
-                        Parties with up to 15 CP always play the lower level range.
-                    </span>
-                    <span id="fn4_mid_up" class="fn4-part" style="display:none;">
-                        Parties with 16–18 CP play the higher range if they have up to 4 PCs.
-                    </span>
-                    <span id="fn4_mid_down" class="fn4-part" style="display:none;">
-                        Parties with 16–18 CP play the lower level range if they have 5+ PCs.
-                    </span>
-                    <span id="fn4_high" class="fn4-part" style="display:none;">
-                        Parties with 19+ CP always play the higher range.
-                    </span>
+                    <span id="fn4_low" class="fn4-part">Parties with up to 15 CP always play the lower level range.</span>
+                    <span id="fn4_mid_up" class="fn4-part">Parties with 16–18 CP play the higher range if they have up to 4 PCs.</span>
+                    <span id="fn4_mid_down" class="fn4-part">Parties with 16–18 CP play the lower level range if they have 5+ PCs.</span>
+                    <span id="fn4_high" class="fn4-part">Parties with 19+ CP always play the higher level range.</span>
                 </li>
 
             </ul>
@@ -169,7 +169,6 @@
                     <li>📜 PFS – Pathfinder Society</li>
                 </ul>
 
-                <!-- Spacer -->
                 <div class="appendix-spacer"></div>
 
                 <!-- Glossary -->
@@ -178,7 +177,6 @@
                     <li>📘 Pregens – Pregenerated Characters, also known as Iconic Characters.</li>
                 </ul>
 
-                <!-- Spacer -->
                 <div class="appendix-spacer"></div>
 
                 <!-- Challenge Point Table -->
@@ -198,7 +196,6 @@
                     </tbody>
                 </table>
 
-                <!-- Spacer -->
                 <div class="appendix-spacer"></div>
 
                 <!-- NPC Pregens Table -->

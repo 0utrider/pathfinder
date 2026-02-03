@@ -12,7 +12,6 @@ const numPlayersDisplay = document.getElementById("numPlayersDisplay");
 
 const numPregens = document.getElementById("numPregens");
 const numPregensDisplay = document.getElementById("numPregensDisplay");
-const numPregensDetail = document.getElementById("numPregensDetail");
 
 // Player grid container
 const playerLevelContainer = document.getElementById("playerLevelContainer");
@@ -20,6 +19,7 @@ const playerLevelContainer = document.getElementById("playerLevelContainer");
 // Output fields
 const cpFromPCs = document.getElementById("cpFromPCs");
 const cpPregens = document.getElementById("cpPregens");
+const pregenLabel = document.getElementById("pregenLabel");
 const cpHardmode = document.getElementById("cpHardmode");
 const hardmodeRow = document.getElementById("hardmodeRow");
 const totalCP = document.getElementById("totalCP");
@@ -60,21 +60,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ===============================
-// THEME TOGGLE
+// THEME TOGGLE (Dark by default)
 // ===============================
 themeToggle.addEventListener("change", () => {
-    const dark = themeToggle.checked;
-    document.body.classList.toggle("dark-mode", dark);
-    themeToggleLabel.textContent = dark ? "Light Mode" : "Dark Mode";
-    localStorage.setItem("cpcalc-theme", dark ? "dark" : "light");
+    const light = themeToggle.checked;
+    document.body.classList.toggle("dark-mode", !light);
+    localStorage.setItem("cpcalc-theme", light ? "light" : "dark");
 });
 
 function applyThemeFromStorage() {
     const saved = localStorage.getItem("cpcalc-theme");
-    if (saved === "dark") {
+
+    if (saved === "light") {
         themeToggle.checked = true;
+        document.body.classList.remove("dark-mode");
+    } else {
+        themeToggle.checked = false;
         document.body.classList.add("dark-mode");
-        themeToggleLabel.textContent = "Light Mode";
     }
 }
 
@@ -143,7 +145,6 @@ function updateNumPlayersDisplay() {
 
 function updateNumPregensDisplay() {
     numPregensDisplay.textContent = `${numPregens.value} Pregens`;
-    numPregensDetail.style.display = "none"; // Will be filled in later by CP logic
 }
 
 
@@ -199,23 +200,13 @@ function enforceLevelRangeRules() {
 // VALIDATION WRAPPER (logic added later)
 // ===============================
 function validateAll() {
-    // Part 2 will fill in:
-    // - Player level legality
-    // - Party legality
-    // - Hardmode detection
-    // - Footnote updates
-    // - CP calculation
-    // - Play Up / Play Down
-    // - NPC Pregen level extraction
-
-    // For now, just clear outputs
     totalCP.textContent = "--";
     playDirection.textContent = "--";
 }
 
 
 // ===============================
-// PART 2: VALIDATION + FOOTNOTES + PARTY RULES
+// PART 2 — VALIDATION + FOOTNOTES + PARTY RULES
 // ===============================
 
 // Convenience getters
@@ -235,7 +226,7 @@ function validatePlayerLevels() {
 
     const boxes = playerLevelContainer.querySelectorAll(".player-box");
     boxes.forEach((box, index) => {
-        if (index >= getNumPlayers()) return; // hidden boxes ignored
+        if (index >= getNumPlayers()) return;
 
         const input = box.querySelector("input");
         const val = parseInt(input.value);
@@ -263,13 +254,9 @@ function checkPartyLegality() {
     let legal = true;
     let hardmode = false;
 
-    // 2 players only legal if scenario min ≤ 5
     if (players === 2 && min > 5) legal = false;
-
-    // 2 players must have pregens
     if (players === 2 && pregens === 0) legal = false;
 
-    // 3 players, no pregens, min ≥ 6 → hardmode allowed
     if (players === 3 && pregens === 0 && min >= 6) {
         hardmode = true;
     }
@@ -286,26 +273,19 @@ function updateFootnotesBasic() {
     const players = getNumPlayers();
     const pregens = getNumPregens();
 
-    // Reset
     [footnote1, footnote2, footnote3].forEach(fn =>
         fn.classList.remove("fn-purple", "fn-red")
     );
 
-    // Footnote 1
     if (players === 2) {
-        if (min >= 7) {
-            footnote1.classList.add("fn-red");
-        } else {
-            footnote1.classList.add("fn-purple");
-        }
+        if (min >= 7) footnote1.classList.add("fn-red");
+        else footnote1.classList.add("fn-purple");
     }
 
-    // Footnote 2
     if (players <= 3) {
         footnote2.classList.add("fn-purple");
     }
 
-    // Footnote 3
     if (players === 3 && pregens === 0 && min >= 6) {
         footnote3.classList.add("fn-purple");
     }
@@ -316,31 +296,27 @@ function updateFootnotesBasic() {
 // FOOTNOTE 4 DYNAMIC SPANS
 // ===============================
 function updateFootnote4(totalCPValue) {
-    // Hide all spans first
     [fn4_low, fn4_mid_up, fn4_mid_down, fn4_high].forEach(span => {
         span.style.display = "none";
         span.classList.remove("fn-purple");
     });
 
-    if (isNaN(totalCPValue)) return; // no CP yet → show nothing
+    if (isNaN(totalCPValue)) return;
 
     const players = getNumPlayers();
 
-    // ≤15 CP
     if (totalCPValue <= 15) {
         fn4_low.style.display = "inline";
         fn4_low.classList.add("fn-purple");
         return;
     }
 
-    // ≥19 CP
     if (totalCPValue >= 19) {
         fn4_high.style.display = "inline";
         fn4_high.classList.add("fn-purple");
         return;
     }
 
-    // 16–18 CP band
     if (totalCPValue >= 16 && totalCPValue <= 18) {
         if (players <= 4) {
             fn4_mid_up.style.display = "inline";
@@ -385,23 +361,17 @@ validateAll = function () {
 
     clearInvalidState();
 
-    // Part 3 will compute CP and call updateFootnote4 + playDirection
+    // Part 3 will compute CP and update Footnote 4 + Play Direction
 };
 
 
 // ===============================
-// PART 3: CP CALCULATION ENGINE
+// PART 3 — CP CALCULATION ENGINE
 // ===============================
 
 // -------------------------------
 // CP FROM PC LEVELS
 // -------------------------------
-// Challenge Point Table:
-// Lowest allowed level → +2
-// +1 → +3
-// +2 → +4
-// +3 → +6
-
 function getCPForPC(level, minLevel) {
     const diff = level - minLevel;
     switch (diff) {
@@ -409,7 +379,7 @@ function getCPForPC(level, minLevel) {
         case 1: return 3;
         case 2: return 4;
         case 3: return 6;
-        default: return 0; // Should never happen due to validation
+        default: return 0;
     }
 }
 
@@ -445,14 +415,10 @@ const pregenTable = [
 // -------------------------------
 function lookupPregenRow(baseCP, scenarioMin, players) {
     return pregenTable.find(row => {
-        // Scenario min match
         if (row.min === 7 && scenarioMin < 7) return false;
         if (row.min !== 7 && row.min !== scenarioMin) return false;
-
-        // Player count
         if (row.players !== players) return false;
 
-        // CP band
         if (row.cp === "Any") return true;
         if (row.cp === "<8" && baseCP < 8) return true;
         if (row.cp === "8+" && baseCP >= 8) return true;
@@ -491,7 +457,7 @@ function calculateCP(hardmodeActive) {
     // 2. NPC PREGEN MODIFIER + LEVEL
     // -------------------------------
     let pregenMod = 0;
-    let pregenLevelText = "";
+    let pregenLevel = null;
 
     if (pregens > 0 && players <= 3) {
         const row = lookupPregenRow(cpPCs, min, players);
@@ -499,38 +465,35 @@ function calculateCP(hardmodeActive) {
         if (row) {
             pregenMod = row.mod;
 
-            // Extract level from "2 lvl 3"
             if (row.pregens !== "none") {
                 const parts = row.pregens.split("lvl");
-                const level = parts[1].trim();
-                pregenLevelText = `${pregens} Pregens, Level ${level}`;
+                pregenLevel = parts[1].trim();
             }
+        }
+
+        if (pregenLevel) {
+            pregenLabel.textContent = `${pregens} Pregens, level ${pregenLevel}:`;
+        } else {
+            pregenLabel.textContent = `${pregens} Pregens:`;
         }
 
         cpPregens.textContent = `+${pregenMod}`;
         cpPregens.classList.remove("greyed");
         cpPregens.classList.add("pregen-active");
 
-        if (pregenLevelText) {
-            numPregensDetail.textContent = pregenLevelText;
-            numPregensDetail.style.display = "block";
-            numPregensDetail.classList.add("fn-purple");
-        }
-
     } else {
+        pregenLabel.textContent = `${pregens} Pregens:`;
         cpPregens.textContent = "--";
         cpPregens.classList.add("greyed");
         cpPregens.classList.remove("pregen-active");
-
-        numPregensDetail.style.display = "none";
-        numPregensDetail.classList.remove("fn-purple");
     }
 
 
     // -------------------------------
     // 3. HARDMODE MODIFIER
     // -------------------------------
-    const hardmodeMod = 0; // flag only
+    const hardmodeMod = 0;
+
     if (hardmodeActive) {
         hardmodeRow.style.display = "flex";
         cpHardmode.textContent = "+0";
@@ -545,7 +508,6 @@ function calculateCP(hardmodeActive) {
     const total = cpPCs + pregenMod + hardmodeMod;
     totalCP.textContent = total;
 
-    // Valid pulse
     totalCP.classList.remove("invalid-total");
     totalCP.classList.add("valid-total");
 
@@ -564,7 +526,6 @@ function calculateCP(hardmodeActive) {
     } else if (total >= 19) {
         playDirection.textContent = "Play Up";
     } else {
-        // 16–18 band
         playDirection.textContent = (players <= 4) ? "Play Up" : "Play Down";
     }
 }
@@ -590,62 +551,3 @@ validateAll = function () {
 };
 
 
-// ===============================
-// PART 4: ANIMATION + FINAL GLUE
-// ===============================
-
-// -------------------------------
-// ANIMATION HELPERS
-// -------------------------------
-function setValidPulse() {
-    totalCP.classList.remove("invalid-total");
-    void totalCP.offsetWidth; // restart animation
-    totalCP.classList.add("valid-total");
-}
-
-function setInvalidPulse() {
-    totalCP.classList.remove("valid-total");
-    void totalCP.offsetWidth; // restart animation
-    totalCP.classList.add("invalid-total");
-}
-
-function restartAnimation(el) {
-    el.classList.remove("valid-total", "invalid-total");
-    void el.offsetWidth;
-}
-
-
-// -------------------------------
-// OVERRIDE INVALID STATE HANDLERS
-// -------------------------------
-const _showInvalidState = showInvalidState;
-showInvalidState = function () {
-    _showInvalidState();
-    setInvalidPulse();
-};
-
-const _clearInvalidState = clearInvalidState;
-clearInvalidState = function () {
-    _clearInvalidState();
-    // valid pulse will be applied after CP calculation
-};
-
-
-// -------------------------------
-// GLOBAL INPUT LISTENER
-// -------------------------------
-document.addEventListener("input", () => {
-    validateAll();
-});
-
-
-// -------------------------------
-// FINAL VALIDATION HOOK
-// -------------------------------
-const validateAll_part3 = validateAll;
-validateAll = function () {
-    validateAll_part3();
-    // calculateCP already applies valid pulse when appropriate
-};
-
-console.log("Challenge Point Calculator script loaded.");
