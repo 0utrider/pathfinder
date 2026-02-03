@@ -196,6 +196,7 @@ body:not(.dark-mode) .player-box {
     display: flex;
     justify-content: space-between;
     padding: 6px 0;
+    margin-bottom: 4px;
 }
 
 .output-value {
@@ -212,6 +213,11 @@ body:not(.dark-mode) .player-box {
 
 body:not(.dark-mode) .pregen-active {
     color: #7a4bd8;
+}
+
+.invalid {
+    color: #ff6b6b !important;
+    font-weight: bold;
 }
 
 .hardmode-highlight {
@@ -237,6 +243,10 @@ body:not(.dark-mode) .total-value {
 
 body:not(.dark-mode) .play-direction {
     color: #7a4bd8;
+}
+
+.play-row {
+    margin-top: 14px;
 }
 
 /* ===============================
@@ -269,7 +279,8 @@ body:not(.dark-mode) .fn-purple {
 .collapse-button {
     width: 100%;
     padding: 10px;
-    background: #3a3531;
+    background: #4a443f;
+    color: #e8e0d8;
     border: none;
     border-radius: 8px;
     font-family: "Cinzel", serif;
@@ -279,6 +290,15 @@ body:not(.dark-mode) .fn-purple {
 
 body:not(.dark-mode) .collapse-button {
     background: #e8dcc2;
+    color: #2a1f1a;
+}
+
+.collapse-button:hover {
+    background: #5a544f;
+}
+
+body:not(.dark-mode) .collapse-button:hover {
+    background: #f0e4c8;
 }
 
 .collapse-content {
@@ -363,7 +383,6 @@ body:not(.dark-mode) .cp-table tr:nth-child(even) {
     color: #ff6b6b !important;
 }
 
-
 /* ===============================
    INTERACTION POLISH
    =============================== */
@@ -387,45 +406,10 @@ body:not(.dark-mode) .player-level-input:hover {
     border-color: #7a4bd8;
 }
 
-.collapse-button:hover {
-    background: #4a443f;
-}
-
-body:not(.dark-mode) .collapse-button:hover {
-    background: #f0e4c8;
-}
-
-
 /* ===============================
    FOOTNOTE 4 SPANS
    =============================== */
 
 .fn4-part {
     display: none;
-}
-
-
-/* ===============================
-   PLAY UP / PLAY DOWN
-   =============================== */
-
-.play-direction {
-    margin-top: 4px;
-}
-
-
-/* ===============================
-   SPACING REFINEMENTS
-   =============================== */
-
-.output-row {
-    margin-bottom: 4px;
-}
-
-.total-row {
-    margin-top: 10px;
-}
-
-.play-row {
-    margin-top: 6px;
 }

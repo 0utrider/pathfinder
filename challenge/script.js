@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ===============================
-// THEME TOGGLE (Dark by default)
+// THEME TOGGLE (Dark default)
 // ===============================
 themeToggle.addEventListener("change", () => {
     const light = themeToggle.checked;
@@ -177,9 +177,6 @@ numPregens.addEventListener("input", () => {
 // ===============================
 // LEVEL RANGE RULES
 // ===============================
-// Must satisfy:
-// - min ≤ max
-// - max ≤ min + 3
 function enforceLevelRangeRules() {
     let min = parseInt(levelMin.value);
     let max = parseInt(levelMax.value);
@@ -197,11 +194,11 @@ function enforceLevelRangeRules() {
 
 
 // ===============================
-// VALIDATION WRAPPER (logic added later)
+// VALIDATION WRAPPER (base)
 // ===============================
 function validateAll() {
     totalCP.textContent = "--";
-    playDirection.textContent = "--";
+    playDirection.textContent = "";
 }
 
 
@@ -209,11 +206,14 @@ function validateAll() {
 // PART 2 — VALIDATION + FOOTNOTES + PARTY RULES
 // ===============================
 
-// Convenience getters
 function getMinLevel() { return parseInt(levelMin.value); }
 function getMaxLevel() { return parseInt(levelMax.value); }
 function getNumPlayers() { return parseInt(numPlayers.value); }
 function getNumPregens() { return parseInt(numPregens.value); }
+
+function formatPregenLabel(n) {
+    return n === 1 ? "1 Pregen" : `${n} Pregens`;
+}
 
 
 // ===============================
@@ -334,7 +334,7 @@ function updateFootnote4(totalCPValue) {
 // ===============================
 function showInvalidState() {
     totalCP.textContent = "--";
-    playDirection.textContent = "--";
+    playDirection.textContent = "";
     totalCP.classList.remove("valid-total");
     totalCP.classList.add("invalid-total");
 }
@@ -345,7 +345,7 @@ function clearInvalidState() {
 
 
 // ===============================
-// EXTEND validateAll WITH LOGIC
+// EXTENDED validateAll
 // ===============================
 const validateAll_base = validateAll;
 validateAll = function () {
@@ -354,14 +354,29 @@ validateAll = function () {
 
     updateFootnotesBasic();
 
-    if (!levelsOK || !legal) {
+    const pregens = getNumPregens();
+    const players = getNumPlayers();
+    const pregensIllegal = (players >= 4 && pregens > 0);
+
+    if (!levelsOK || !legal || pregensIllegal) {
+        if (pregenLabel && cpPregens) {
+            if (pregensIllegal) {
+                pregenLabel.classList.add("invalid");
+                cpPregens.classList.add("invalid");
+            } else {
+                pregenLabel.classList.remove("invalid");
+                cpPregens.classList.remove("invalid");
+            }
+        }
         showInvalidState();
         return;
     }
 
-    clearInvalidState();
+    pregenLabel.classList.remove("invalid");
+    cpPregens.classList.remove("invalid");
 
-    // Part 3 will compute CP and update Footnote 4 + Play Direction
+    clearInvalidState();
+    calculateCP(hardmode);
 };
 
 
@@ -369,9 +384,6 @@ validateAll = function () {
 // PART 3 — CP CALCULATION ENGINE
 // ===============================
 
-// -------------------------------
-// CP FROM PC LEVELS
-// -------------------------------
 function getCPForPC(level, minLevel) {
     const diff = level - minLevel;
     switch (diff) {
@@ -384,35 +396,27 @@ function getCPForPC(level, minLevel) {
 }
 
 
-// -------------------------------
-// NPC PREGEN TABLE (WITH LEVELS)
-// -------------------------------
+// ===============================
+// NPC PREGEN TABLE
+// ===============================
 const pregenTable = [
-    // Scenario Min 1
     { min: 1, players: 2, cp: "<8",    pregens: "2 lvl 1", mod: 4 },
     { min: 1, players: 2, cp: "8+",    pregens: "2 lvl 3", mod: 8 },
     { min: 1, players: 3, cp: "<12",   pregens: "1 lvl 1", mod: 2 },
     { min: 1, players: 3, cp: "12+",   pregens: "1 lvl 3", mod: 4 },
 
-    // Scenario Min 3
     { min: 3, players: 2, cp: "<8",    pregens: "2 lvl 3", mod: 4 },
     { min: 3, players: 2, cp: "8+",    pregens: "2 lvl 5", mod: 8 },
     { min: 3, players: 3, cp: "<12",   pregens: "1 lvl 3", mod: 2 },
     { min: 3, players: 3, cp: "12+",   pregens: "1 lvl 5", mod: 4 },
 
-    // Scenario Min 5
     { min: 5, players: 2, cp: "Any",   pregens: "2 lvl 5", mod: 4 },
     { min: 5, players: 3, cp: "Any",   pregens: "1 lvl 5", mod: 2 },
 
-    // Scenario Min 7+
     { min: 7, players: 3, cp: "<12",   pregens: "none",    mod: 2 },
     { min: 7, players: 3, cp: "12+",   pregens: "none",    mod: 4 }
 ];
 
-
-// -------------------------------
-// PREGEN LOOKUP
-// -------------------------------
 function lookupPregenRow(baseCP, scenarioMin, players) {
     return pregenTable.find(row => {
         if (row.min === 7 && scenarioMin < 7) return false;
@@ -430,17 +434,14 @@ function lookupPregenRow(baseCP, scenarioMin, players) {
 }
 
 
-// -------------------------------
+// ===============================
 // MAIN CP CALCULATION
-// -------------------------------
+// ===============================
 function calculateCP(hardmodeActive) {
     const min = getMinLevel();
     const players = getNumPlayers();
     const pregens = getNumPregens();
 
-    // -------------------------------
-    // 1. CP FROM PCs
-    // -------------------------------
     let cpPCs = 0;
     const boxes = playerLevelContainer.querySelectorAll(".player-box");
 
@@ -453,45 +454,39 @@ function calculateCP(hardmodeActive) {
     cpFromPCs.textContent = cpPCs;
 
 
-    // -------------------------------
-    // 2. NPC PREGEN MODIFIER + LEVEL
-    // -------------------------------
+    // PREGENS
     let pregenMod = 0;
     let pregenLevel = null;
+
+    const pregenText = formatPregenLabel(pregens);
 
     if (pregens > 0 && players <= 3) {
         const row = lookupPregenRow(cpPCs, min, players);
 
-        if (row) {
-            pregenMod = row.mod;
-
-            if (row.pregens !== "none") {
-                const parts = row.pregens.split("lvl");
-                pregenLevel = parts[1].trim();
-            }
+        if (row && row.pregens !== "none") {
+            const parts = row.pregens.split("lvl");
+            pregenLevel = parts[1].trim();
         }
 
-        if (pregenLevel) {
-            pregenLabel.textContent = `${pregens} Pregens, level ${pregenLevel}:`;
-        } else {
-            pregenLabel.textContent = `${pregens} Pregens:`;
-        }
+        pregenLabel.textContent = pregenLevel
+            ? `${pregenText}, level ${pregenLevel}:`
+            : `${pregenText}:`;
+
+        pregenMod = row ? row.mod : 0;
 
         cpPregens.textContent = `+${pregenMod}`;
         cpPregens.classList.remove("greyed");
         cpPregens.classList.add("pregen-active");
 
     } else {
-        pregenLabel.textContent = `${pregens} Pregens:`;
+        pregenLabel.textContent = `${pregenText}:`;
         cpPregens.textContent = "--";
         cpPregens.classList.add("greyed");
         cpPregens.classList.remove("pregen-active");
     }
 
 
-    // -------------------------------
-    // 3. HARDMODE MODIFIER
-    // -------------------------------
+    // HARDMODE
     const hardmodeMod = 0;
 
     if (hardmodeActive) {
@@ -502,9 +497,7 @@ function calculateCP(hardmodeActive) {
     }
 
 
-    // -------------------------------
-    // 4. TOTAL CP
-    // -------------------------------
+    // TOTAL CP
     const total = cpPCs + pregenMod + hardmodeMod;
     totalCP.textContent = total;
 
@@ -512,15 +505,17 @@ function calculateCP(hardmodeActive) {
     totalCP.classList.add("valid-total");
 
 
-    // -------------------------------
-    // 5. FOOTNOTE 4
-    // -------------------------------
+    // FOOTNOTE 4
     updateFootnote4(total);
 
 
-    // -------------------------------
-    // 6. PLAY UP / PLAY DOWN
-    // -------------------------------
+    // PLAY UP / DOWN
+    const span = getMaxLevel() - getMinLevel();
+    if (span < 3) {
+        playDirection.textContent = "";
+        return;
+    }
+
     if (total <= 15) {
         playDirection.textContent = "Play Down";
     } else if (total >= 19) {
@@ -528,26 +523,4 @@ function calculateCP(hardmodeActive) {
     } else {
         playDirection.textContent = (players <= 4) ? "Play Up" : "Play Down";
     }
-}
-
-
-// -------------------------------
-// FINAL VALIDATION HOOK
-// -------------------------------
-const validateAll_part2 = validateAll;
-validateAll = function () {
-    const levelsOK = validatePlayerLevels();
-    const { legal, hardmode } = checkPartyLegality();
-
-    updateFootnotesBasic();
-
-    if (!levelsOK || !legal) {
-        showInvalidState();
-        return;
-    }
-
-    clearInvalidState();
-    calculateCP(hardmode);
 };
-
-
