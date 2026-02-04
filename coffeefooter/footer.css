@@ -6,9 +6,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
   gap: 1.25rem;
   min-height: 2rem; /* prevents collapse */
+}
+
+/* Prevent flexbox expansion when widget is empty */
+#outrider-coffeefooter .bmc-btn-container {
+  display: inline-flex;
+  min-width: 1px; /* prevents zero-width flex expansion */
 }
 
 /* FULL MODE -------------------------------------------------- */
@@ -16,6 +21,7 @@
   background: #3a3f46; /* slate */
   color: #e4e4e6;
   padding: 0.6rem 1rem;
+  flex-wrap: wrap; /* full mode can wrap */
 }
 
 #outrider-coffeefooter.full a {
@@ -38,6 +44,7 @@
   background: transparent;
   color: inherit;
   padding: 0.4rem 0.5rem;
+  flex-wrap: nowrap; /* no wrapping */
   min-height: 2rem;
 }
 
@@ -47,6 +54,7 @@
   color: inherit;
   padding: 0.2rem 0.2rem;
   gap: 0.5rem;
+  flex-wrap: nowrap; /* no wrapping */
   min-height: 1.6rem;
 }
 
