@@ -60,9 +60,7 @@ You can easily swap out:
 
 ---
 
-## 🤝 Contributing
-PRs welcome.  
-If you want to add features, improve UI/UX, or sneak in tasteful jokes, feel free.
+***Did you find this useful? [<img src="https://0utrider.github.io/pathfinder/coffeefooter/coffee1.webp" width="36" height="36" align="center" /> **Buy Me a Coffee!**](https://buymeacoffee.com/outrider)***
 
 ---
 
