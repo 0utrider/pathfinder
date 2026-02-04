@@ -1,4 +1,8 @@
 (function () {
+  /* Determine mode */
+  const currentScript = document.currentScript;
+  const mode = currentScript?.getAttribute("data-mode") || "full";
+
   /* Inject font */
   const font = document.createElement("link");
   font.rel = "stylesheet";
@@ -14,15 +18,29 @@
   /* Create footer */
   const footer = document.createElement("footer");
   footer.id = "outrider-coffeefooter";
-  footer.innerHTML = `
-    <span class="footer-text">Did you find this useful?</span>
+  footer.classList.add(mode);
 
-    <span class="bmc-btn-container" id="bmc-container"></span>
+  /* HTML for each mode */
+  if (mode === "minimal") {
+    footer.innerHTML = `
+      <span class="bmc-btn-container" id="bmc-container"></span>
+    `;
+  } else if (mode === "button") {
+    footer.innerHTML = `
+      <span class="bmc-btn-container" id="bmc-container"></span>
+    `;
+  } else {
+    footer.innerHTML = `
+      <span class="footer-text">Did you find this useful?</span>
 
-    <a href="https://0utrider.github.io/pathfinder/" target="_blank">
-      Outrider's Pathfinder Projects
-    </a>
-  `;
+      <span class="bmc-btn-container" id="bmc-container"></span>
+
+      <a href="https://0utrider.github.io/pathfinder/" target="_blank">
+        Outrider's Pathfinder Projects
+      </a>
+    `;
+  }
+
   document.body.appendChild(footer);
 
   /* Inject Buy Me a Coffee widget */
