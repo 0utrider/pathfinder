@@ -1,8 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
+  /* Remove any existing footer to avoid duplicates / stale content */
+  const existing = document.getElementById("outrider-coffeefooter");
+  if (existing) existing.remove();
 
   /* Determine mode */
   const currentScript = document.currentScript;
   const mode = currentScript?.getAttribute("data-mode") || "full";
+
+  /* Inject font.css (Playwrite NZ Basic) */
+  const fontLink = document.createElement("link");
+  fontLink.rel = "stylesheet";
+  fontLink.href = "https://0utrider.github.io/pathfinder/coffeefooter/font.css";
+  document.head.appendChild(fontLink);
+
+  /* Inject footer.css */
+  const cssLink = document.createElement("link");
+  cssLink.rel = "stylesheet";
+  cssLink.href = "https://0utrider.github.io/pathfinder/coffeefooter/footer.css";
+  document.head.appendChild(cssLink);
 
   /* Create footer */
   const footer = document.createElement("footer");
@@ -19,18 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
         <img src="${iconPath}" class="coffee-icon" alt="Coffee">
       </a>
     `;
-  }
-
-  else if (mode === "button") {
+  } else if (mode === "button") {
     footer.innerHTML = `
       <a href="https://buymeacoffee.com/outrider" target="_blank">
         <img src="${iconPath}" class="coffee-icon" alt="Coffee">
         Buy Me a Coffee!
       </a>
     `;
-  }
-
-  else {
+  } else {
     footer.innerHTML = `
       <span class="footer-text">Did you find this useful?</span>
 
@@ -50,7 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
   /* Add bottom padding so content never hides behind the floating footer */
   requestAnimationFrame(() => {
     const footerHeight = footer.offsetHeight;
-    document.body.style.paddingBottom = footerHeight + "px";
+    const currentPadding = parseFloat(
+      window.getComputedStyle(document.body).paddingBottom || "0"
+    );
+    if (footerHeight > currentPadding) {
+      document.body.style.paddingBottom = footerHeight + "px";
+    }
   });
-
 });
