@@ -4,37 +4,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentScript = document.currentScript;
   const mode = currentScript?.getAttribute("data-mode") || "full";
 
-  /* Inject font */
-  const font = document.createElement("link");
-  font.rel = "stylesheet";
-  font.href = "https://0utrider.github.io/pathfinder/coffeefooter/font.css";
-  document.head.appendChild(font);
-
-  /* Inject CSS */
-  const css = document.createElement("link");
-  css.rel = "stylesheet";
-  css.href = "https://0utrider.github.io/pathfinder/coffeefooter/footer.css";
-  document.head.appendChild(css);
-
   /* Create footer */
   const footer = document.createElement("footer");
   footer.id = "outrider-coffeefooter";
   footer.classList.add(mode);
 
-  /* HTML for each mode */
+  /* Coffee icon path */
+  const iconPath = "https://0utrider.github.io/pathfinder/coffeefooter/coffee1.webp";
+
+  /* Build HTML for each mode */
   if (mode === "minimal") {
     footer.innerHTML = `
-      <span class="bmc-btn-container" id="bmc-container"></span>
+      <a href="https://buymeacoffee.com/outrider" target="_blank">
+        <img src="${iconPath}" class="coffee-icon" alt="Coffee">
+      </a>
     `;
-  } else if (mode === "button") {
+  }
+
+  else if (mode === "button") {
     footer.innerHTML = `
-      <span class="bmc-btn-container" id="bmc-container"></span>
+      <a href="https://buymeacoffee.com/outrider" target="_blank">
+        <img src="${iconPath}" class="coffee-icon" alt="Coffee">
+        Buy Me a Coffee!
+      </a>
     `;
-  } else {
+  }
+
+  else {
     footer.innerHTML = `
       <span class="footer-text">Did you find this useful?</span>
 
-      <span class="bmc-btn-container" id="bmc-container"></span>
+      <a href="https://buymeacoffee.com/outrider" target="_blank">
+        <img src="${iconPath}" class="coffee-icon" alt="Coffee">
+        Buy Me a Coffee!
+      </a>
 
       <a href="https://0utrider.github.io/pathfinder/" target="_blank">
         Outrider's Pathfinder Projects
@@ -44,29 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.body.appendChild(footer);
 
-  /* Inject Buy Me a Coffee widget */
-  const bmc = document.createElement("script");
-  bmc.type = "text/javascript";
-  bmc.src = "https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js";
-  bmc.setAttribute("data-name", "bmc-button");
-  bmc.setAttribute("data-slug", "outrider");
-  bmc.setAttribute("data-color", "#825fc4");
-  bmc.setAttribute("data-emoji", "");
-  bmc.setAttribute("data-font", "Lato");
-  bmc.setAttribute("data-text", "Buy me a coffee");
-  bmc.setAttribute("data-outline-color", "#ffffff");
-  bmc.setAttribute("data-font-color", "#ffffff");
-  bmc.setAttribute("data-coffee-color", "#FFDD00");
-
-  /* Fallback if blocked by adblocker */
-  bmc.onerror = () => {
-    document.getElementById("bmc-container").innerHTML = `
-      <a href="https://buymeacoffee.com/outrider" target="_blank">
-        Buy me a coffee
-      </a>
-    `;
-  };
-
-  document.getElementById("bmc-container").appendChild(bmc);
+  /* Add bottom padding so content never hides behind the floating footer */
+  requestAnimationFrame(() => {
+    const footerHeight = footer.offsetHeight;
+    document.body.style.paddingBottom = footerHeight + "px";
+  });
 
 });
