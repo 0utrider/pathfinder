@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  /* Remove any existing footer to avoid duplicates / stale content */
+
+  /* Remove any existing footer to avoid duplicates */
   const existing = document.getElementById("outrider-coffeefooter");
   if (existing) existing.remove();
 
@@ -7,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentScript = document.currentScript;
   const mode = currentScript?.getAttribute("data-mode") || "full";
 
-  /* Inject font.css (Playwrite NZ Basic) */
+  /* Inject font.css */
   const fontLink = document.createElement("link");
   fontLink.rel = "stylesheet";
   fontLink.href = "https://0utrider.github.io/pathfinder/coffeefooter/font.css";
@@ -34,24 +35,24 @@ document.addEventListener("DOMContentLoaded", () => {
         <img src="${iconPath}" class="coffee-icon" alt="Coffee">
       </a>
     `;
-  } else if (mode === "button") {
+  }
+
+  else if (mode === "button") {
     footer.innerHTML = `
       <a href="https://buymeacoffee.com/outrider" target="_blank">
         <img src="${iconPath}" class="coffee-icon" alt="Coffee">
         Buy Me a Coffee!
       </a>
     `;
-  } else {
+  }
+
+  else {
     footer.innerHTML = `
       <span class="footer-text">Did you find this useful?</span>
 
       <a href="https://buymeacoffee.com/outrider" target="_blank">
         <img src="${iconPath}" class="coffee-icon" alt="Coffee">
         Buy Me a Coffee!
-      </a>
-
-      <a href="https://0utrider.github.io/pathfinder/" target="_blank">
-        Outrider's Pathfinder Projects
       </a>
     `;
   }

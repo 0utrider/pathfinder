@@ -3,7 +3,7 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  right: 0; /* ensure full-width */
+  right: 0;
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -40,9 +40,14 @@
 
 /* FULL MODE -------------------------------------------------- */
 #outrider-coffeefooter.full {
-  background: rgba(58, 63, 70, 0.95); /* slate with slight transparency */
+  background: rgba(58, 63, 70, 0.95);
   color: #e4e4e6;
   flex-wrap: wrap;
+}
+
+#outrider-coffeefooter.full .footer-text {
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 /* BUTTON MODE ------------------------------------------------ */
@@ -51,6 +56,16 @@
   color: #e4e4e6;
   flex-wrap: nowrap;
   padding: 0.5rem 0.9rem;
+  gap: 0.6rem;
+}
+
+#outrider-coffeefooter.button a {
+  font-size: 0.95rem;
+}
+
+#outrider-coffeefooter.button .coffee-icon {
+  width: 20px;
+  height: 20px;
 }
 
 /* MINIMAL MODE ---------------------------------------------- */
@@ -63,7 +78,7 @@
 
 /* Minimal mode: icon only */
 #outrider-coffeefooter.minimal a {
-  font-size: 0; /* hide text */
+  font-size: 0;
 }
 
 #outrider-coffeefooter.minimal .coffee-icon {
