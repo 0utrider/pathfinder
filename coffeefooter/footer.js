@@ -1,4 +1,5 @@
-(function () {
+document.addEventListener("DOMContentLoaded", () => {
+
   /* Determine mode */
   const currentScript = document.currentScript;
   const mode = currentScript?.getAttribute("data-mode") || "full";
@@ -57,5 +58,15 @@
   bmc.setAttribute("data-font-color", "#ffffff");
   bmc.setAttribute("data-coffee-color", "#FFDD00");
 
+  /* Fallback if blocked by adblocker */
+  bmc.onerror = () => {
+    document.getElementById("bmc-container").innerHTML = `
+      <a href="https://buymeacoffee.com/outrider" target="_blank">
+        Buy me a coffee
+      </a>
+    `;
+  };
+
   document.getElementById("bmc-container").appendChild(bmc);
-})();
+
+});

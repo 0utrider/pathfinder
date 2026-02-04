@@ -6,8 +6,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.25rem;
   flex-wrap: wrap;
+  gap: 1.25rem;
+  min-height: 2rem; /* prevents collapse */
 }
 
 /* FULL MODE -------------------------------------------------- */
@@ -37,6 +38,7 @@
   background: transparent;
   color: inherit;
   padding: 0.4rem 0.5rem;
+  min-height: 2rem;
 }
 
 /* MINIMAL MODE ---------------------------------------------- */
@@ -45,9 +47,10 @@
   color: inherit;
   padding: 0.2rem 0.2rem;
   gap: 0.5rem;
+  min-height: 1.6rem;
 }
 
-/* Buy Me a Coffee button override (applies in all modes) */
+/* Buy Me a Coffee button override (all modes) */
 #outrider-coffeefooter .bmc-btn-container button,
 #outrider-coffeefooter .bmc-btn-container a {
   font-size: 0.8rem !important;
