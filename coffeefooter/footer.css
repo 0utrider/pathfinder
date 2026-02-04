@@ -1,0 +1,39 @@
+#outrider-coffeefooter {
+  width: 100%;
+  background: #3a3f46; /* slate */
+  color: #e4e4e6;
+  font-family: "Playwrite NZ Basic", sans-serif;
+  padding: 0.6rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+#outrider-coffeefooter a {
+  color: #c8d4ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+#outrider-coffeefooter a:hover {
+  text-decoration: underline;
+}
+
+#outrider-coffeefooter .footer-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Buy Me a Coffee button override */
+#outrider-coffeefooter .bmc-btn-container button,
+#outrider-coffeefooter .bmc-btn-container a {
+  font-size: 0.8rem !important;
+  padding: 0.25rem 0.75rem !important;
+  height: auto !important;
+  line-height: 1.2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
