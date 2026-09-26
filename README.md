@@ -11,7 +11,7 @@ Each tool is self‑contained so GMs and players can clone only what they need.
   A tool for calculating Pathfinder Society (2e) scaling and difficulty, with mobile‑friendly layout.
 - **[Downtime Calculator](downtime/index.html)**
   A streamlined tool for calculating Pathfinder Society and Starfinder Society (2e) downtime income, with mobile‑friendly layout and copy‑to‑clipboard summaries.
-- **[Downtime Calculator](ledgecover/index.html)**
+- **[Ledge Cover LOS](ledgecover/index.html)**
   A convenient tool for calculating Pathfinder & Starfinder (2e) cover when a ledge is involved.
 - **[Outrider's RNG](https://foundryvtt.com/packages/outrider-rng)**
   A Foundry VTT module for generating more randomness in dice rolls using a crytographic generator.
