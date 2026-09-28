@@ -26,10 +26,6 @@ All three share one look: light and dark themes (the choice is remembered across
   Configurable Hero Point rerolls for PF2e and SF2e, with a polished-metal Hero Die and Pass the Torch.
 - **[Outrider's RNG](https://foundryvtt.com/packages/outrider-rng)**
   A better random number generator for dice rolls, using WebCrypto.
-- **[Outrider's Stellar Attunement](https://github.com/0utrider/outrider-stellar-attunement)**
-  Solarian Stellar Attunement helper for SF2e that swaps token art to match.
-- **[Outrider's Cantrips](https://github.com/0utrider/outrider-cantrips)**
-  Custom spellcasting feats and rules modifications for PF2e.
 
 ---
 
