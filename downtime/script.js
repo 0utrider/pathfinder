@@ -10,8 +10,6 @@ let pf2Table = null;
 let sf2Table = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  initBackground();
-  initThemeToggle();
   initSystemToggle();
   initDateInput();
   initCharacters();
@@ -20,34 +18,30 @@ document.addEventListener("DOMContentLoaded", () => {
   loadCSVs();
 });
 
-// ============================================================
-//  BACKGROUND HANDLING
-// ============================================================
-
-function initBackground() {
-  const bgLayer = document.getElementById("background-layer");
-  const img = new Image();
-  img.src = "img/background.webp";
-  img.onload = () => bgLayer.classList.add("loaded");
-  img.onerror = () => document.body.classList.add("no-background");
-}
-
-// ============================================================
-//  THEME TOGGLE
-// ============================================================
-
-function initThemeToggle() {
-  const toggle = document.getElementById("lightModeToggle");
-  toggle.addEventListener("change", () => {
-    if (toggle.checked) {
-      document.body.classList.remove("theme-dark");
-      document.body.classList.add("theme-light");
-    } else {
-      document.body.classList.remove("theme-light");
-      document.body.classList.add("theme-dark");
-    }
+// --- theme toggle (shared look across the tools; key is shared per origin) ---
+(function(){
+  const SUN = 'M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 100 8 4 4 0 000-8z';
+  const MOON = 'M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z';
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  function applyTheme(mode, save){
+    root.dataset.theme = mode;
+    document.getElementById('themeIcon').innerHTML = '<path d="' + (mode === 'dark' ? MOON : SUN) + '"/>';
+    document.getElementById('themeLabel').textContent = mode === 'dark' ? 'Dark' : 'Light';
+    btn.setAttribute('aria-pressed', mode === 'dark');
+    if (save) { try { localStorage.setItem('outrider-theme', mode); } catch (e) {} }
+  }
+  let start = 'dark';
+  try {
+    const saved = localStorage.getItem('outrider-theme');
+    if (saved === 'light' || saved === 'dark') start = saved;
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) start = 'light';
+  } catch (e) {}
+  applyTheme(start, false);
+  btn.addEventListener('click', function(){
+    applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true);
   });
-}
+})();
 
 // ============================================================
 //  SYSTEM TOGGLE (PF2 / SF2)
@@ -248,7 +242,7 @@ function createCharacterRow(index) {
   const middle = document.createElement("div");
   middle.className = "character-middle";
   const dcSpan = document.createElement("span");
-  dcSpan.textContent = "DC: —";
+  dcSpan.textContent = "DC: -";
   dcSpan.id = `char-dc-${index}`;
   middle.appendChild(dcSpan);
 
@@ -466,10 +460,10 @@ function recalcRow(card) {
   const hhstInput = card.querySelector(`#char-hhst-${index}`);
 
   // Reset display
-  dcSpan.textContent = "DC: —";
+  dcSpan.textContent = "DC: -";
   dcSpan.style.color = "var(--dc-default)";
   incomeDisplay.value = "";
-  let modifiedELDisplay = "—";
+  let modifiedELDisplay = "-";
 
   const name = nameInput.value.trim();
   if (!name) {
@@ -560,7 +554,7 @@ function recalcRow(card) {
   // INCOME CALCULATION
   // ------------------------------------------------------------
   if (modifiedEL === null) {
-    modifiedELDisplay = "—";
+    modifiedELDisplay = "-";
     incomeDisplay.value = formatCurrency(0);
   } else {
     modifiedELDisplay = String(modifiedEL);
@@ -655,7 +649,7 @@ function updateSummary() {
       return;
     }
 
-    const modifiedELDisplay = card.dataset.modifiedEl || "—";
+    const modifiedELDisplay = card.dataset.modifiedEl || "-";
     const incomeText = incomeDisplay.value || "";
 
     let resultLabel = "";

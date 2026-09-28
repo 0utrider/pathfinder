@@ -41,11 +41,6 @@ const fn4_high = document.getElementById("fn4_high");
 const appendixToggle = document.getElementById("appendixToggle");
 const appendixContent = document.getElementById("appendixContent");
 
-// Theme toggle
-const themeToggle = document.getElementById("themeToggle");
-const themeToggleLabel = document.getElementById("themeToggleLabel");
-
-
 // ===============================
 // INITIAL SETUP
 // ===============================
@@ -54,31 +49,34 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLevelRangeDisplay();
     updateNumPlayersDisplay();
     updateNumPregensDisplay();
-    applyThemeFromStorage();
     validateAll();
 });
 
 
-// ===============================
-// THEME TOGGLE (Dark default)
-// ===============================
-themeToggle.addEventListener("change", () => {
-    const light = themeToggle.checked;
-    document.body.classList.toggle("dark-mode", !light);
-    localStorage.setItem("cpcalc-theme", light ? "light" : "dark");
-});
-
-function applyThemeFromStorage() {
-    const saved = localStorage.getItem("cpcalc-theme");
-
-    if (saved === "light") {
-        themeToggle.checked = true;
-        document.body.classList.remove("dark-mode");
-    } else {
-        themeToggle.checked = false;
-        document.body.classList.add("dark-mode");
-    }
-}
+// --- theme toggle (shared look across the tools; key is shared per origin) ---
+(function(){
+  const SUN = 'M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 100 8 4 4 0 000-8z';
+  const MOON = 'M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z';
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  function applyTheme(mode, save){
+    root.dataset.theme = mode;
+    document.getElementById('themeIcon').innerHTML = '<path d="' + (mode === 'dark' ? MOON : SUN) + '"/>';
+    document.getElementById('themeLabel').textContent = mode === 'dark' ? 'Dark' : 'Light';
+    btn.setAttribute('aria-pressed', mode === 'dark');
+    if (save) { try { localStorage.setItem('outrider-theme', mode); } catch (e) {} }
+  }
+  let start = 'dark';
+  try {
+    const saved = localStorage.getItem('outrider-theme');
+    if (saved === 'light' || saved === 'dark') start = saved;
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) start = 'light';
+  } catch (e) {}
+  applyTheme(start, false);
+  btn.addEventListener('click', function(){
+    applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true);
+  });
+})();
 
 
 // ===============================
@@ -135,7 +133,7 @@ function updatePlayerGridVisibility() {
 // SLIDER DISPLAY UPDATES
 // ===============================
 function updateLevelRangeDisplay() {
-    levelRangeDisplay.textContent = `${levelMin.value} – ${levelMax.value}`;
+    levelRangeDisplay.textContent = `${levelMin.value} - ${levelMax.value}`;
 }
 
 function updateNumPlayersDisplay() {
@@ -203,7 +201,7 @@ function validateAll() {
 
 
 // ===============================
-// PART 2 — VALIDATION + FOOTNOTES + PARTY RULES
+// PART 2 - VALIDATION + FOOTNOTES + PARTY RULES
 // ===============================
 
 function getMinLevel() { return parseInt(levelMin.value); }
@@ -266,7 +264,7 @@ function checkPartyLegality() {
 
 
 // ===============================
-// FOOTNOTE 1–3 LOGIC
+// FOOTNOTE 1-3 LOGIC
 // ===============================
 function updateFootnotesBasic() {
     const min = getMinLevel();
@@ -381,7 +379,7 @@ validateAll = function () {
 
 
 // ===============================
-// PART 3 — CP CALCULATION ENGINE
+// PART 3 - CP CALCULATION ENGINE
 // ===============================
 
 function getCPForPC(level, minLevel) {

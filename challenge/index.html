@@ -14,6 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Challenge Point Calculator</title>
 
+    <script>try{var t=localStorage.getItem('outrider-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+
     <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 
@@ -25,27 +30,18 @@
     <link rel="manifest" href="site.webmanifest">
 </head>
 
-<body class="dark-mode">
-    <!-- Header -->
-    <header class="page-header">
-        <div class="header-inner">
-
-            <!-- Left: Icon + Title -->
-            <div class="header-left">
-                <img src="img/icon.webp" alt="Site Logo" class="site-logo">
-                <h1>Challenge Point Calculator</h1>
-            </div>
-
-            <!-- Right: Theme Toggle -->
-            <div class="header-right">
-                <label class="theme-toggle">
-                    <input type="checkbox" id="themeToggle">
-                    <span id="themeToggleLabel">Light Mode</span>
-                </label>
-            </div>
-
-        </div>
-    </header>
+<body>
+<header class="site-header">
+  <a class="brand" href="https://0utrider.github.io/pathfinder/" title="Outrider's Pathfinder Projects"><img src="img/icon.webp" alt="Outrider's Pathfinder Projects home"></a>
+  <div class="head-text">
+    <h1>Challenge Point Calculator</h1>
+    <p>Pathfinder Society (2e) scaling and difficulty.</p>
+  </div>
+  <button id="themeToggle" type="button" aria-pressed="true">
+    <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+    <span id="themeLabel">Dark</span>
+  </button>
+</header>
 
     <main>
 
@@ -79,7 +75,7 @@
                     <div class="dual-slider-container" id="levelRangeContainer">
                         <input type="range" id="levelMin" min="1" max="20" value="1">
                         <input type="range" id="levelMax" min="1" max="20" value="4">
-                        <div id="levelRangeDisplay" class="range-display">1 – 4</div>
+                        <div id="levelRangeDisplay" class="range-display">1 - 4</div>
                     </div>
 
                     <!-- Number of Players -->
@@ -90,7 +86,7 @@
                     <!-- PC Levels -->
                     <label class="input-label">PC Levels</label>
                     <div id="playerLevelContainer" class="player-grid">
-                        <!-- JS will generate P1–P6 boxes -->
+                        <!-- JS will generate P1-P6 boxes -->
                     </div>
 
                     <!-- NPC Pregens -->
@@ -143,7 +139,7 @@
                 </li>
 
                 <li id="footnote2">
-                    For parties with only 2–3 Players, 1–2 NPC Pregens may be played by the Players or GM in Scenarios with a minimum level of 5 or below.
+                    For parties with only 2-3 Players, 1-2 NPC Pregens may be played by the Players or GM in Scenarios with a minimum level of 5 or below.
                 </li>
 
                 <li id="footnote3">
@@ -153,8 +149,8 @@
 
                 <li id="footnote4">
                     <span id="fn4_low" class="fn4-part">Parties with up to 15 CP always play the lower level range.</span>
-                    <span id="fn4_mid_up" class="fn4-part">Parties with 16–18 CP play the higher range if they have up to 4 PCs.</span>
-                    <span id="fn4_mid_down" class="fn4-part">Parties with 16–18 CP play the lower level range if they have 5+ PCs.</span>
+                    <span id="fn4_mid_up" class="fn4-part">Parties with 16-18 CP play the higher range if they have up to 4 PCs.</span>
+                    <span id="fn4_mid_down" class="fn4-part">Parties with 16-18 CP play the lower level range if they have 5+ PCs.</span>
                     <span id="fn4_high" class="fn4-part">Parties with 19+ CP always play the higher level range.</span>
                 </li>
 
@@ -172,9 +168,9 @@
                 <!-- Acronyms -->
                 <h3>Acronyms</h3>
                 <ul>
-                    <li>🛡️ CP – Challenge Points</li>
-                    <li>🧭 PC – Player Characters</li>
-                    <li>📜 PFS – Pathfinder Society</li>
+                    <li>🛡️ CP - Challenge Points</li>
+                    <li>🧭 PC - Player Characters</li>
+                    <li>📜 PFS - Pathfinder Society</li>
                 </ul>
 
                 <div class="appendix-spacer"></div>
@@ -182,7 +178,7 @@
                 <!-- Glossary -->
                 <h3>Glossary</h3>
                 <ul>
-                    <li>📘 Pregens – Pregenerated Characters, also known as Iconic Characters.</li>
+                    <li>📘 Pregens - Pregenerated Characters, also known as Iconic Characters.</li>
                 </ul>
 
                 <div class="appendix-spacer"></div>

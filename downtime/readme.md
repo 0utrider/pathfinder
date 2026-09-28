@@ -5,6 +5,8 @@ Because math is hard and you have better things to do between sessions.
 **Live version:**  
 https://0utrider.github.io/pathfinder/downtime/index.html
 
+Part of [Outrider's Pathfinder Projects](../README.md).
+
 ---
 
 ## ✨ What It Does
@@ -41,8 +43,7 @@ The built‑in Appendix includes:
 ├── pf2-downtime.csv
 ├── sf2-downtime.csv
 └── img/
-    ├── icon.webp
-    └── background.webp   (optional)
+    └── icon.webp
 ```
 
 ### Run it
@@ -53,7 +54,6 @@ No build step. No dependencies. No arcane rituals. There might be goblins.
 
 ## 🛠 Customization
 You can easily swap out:
-- Background image
 - Icon
 - Color palette
 - CSV tables (for homebrew, house rules, or experimental economic policies)

@@ -15,9 +15,10 @@
   <title>Downtime Calculator</title>
 
   <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Pro:wght@400;600&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <script>try{var t=localStorage.getItem('outrider-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
   <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -26,29 +27,22 @@
   <link rel="manifest" href="site.webmanifest">
 </head>
 
-<body class="theme-dark">
-  <div id="background-layer"></div>
-  <div id="overlay-layer"></div>
-
+<body>
   <div id="app">
 
     <!-- ========================================================= -->
     <!-- HEADER -->
     <!-- ========================================================= -->
-    <header class="app-header">
-      <div class="title-block">
-        <img src="img/icon.webp" class="title-icon" alt="Icon" />
-        <h1 class="app-title">Downtime Calculator</h1>
+    <header class="site-header">
+      <a class="brand" href="https://0utrider.github.io/pathfinder/" title="Outrider's Pathfinder Projects"><img src="img/icon.webp" alt="Outrider's Pathfinder Projects home"></a>
+      <div class="head-text">
+        <h1>Downtime Calculator</h1>
+        <p>Pathfinder and Starfinder Society (2e) downtime income.</p>
       </div>
-
-      <!-- Light Mode Toggle -->
-      <div class="theme-toggle">
-        <label class="toggle-label">
-          <input type="checkbox" id="lightModeToggle" />
-          <span class="toggle-custom"></span>
-          <span class="toggle-text">Light Mode</span>
-        </label>
-      </div>
+      <button id="themeToggle" type="button" aria-pressed="true">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+        <span id="themeLabel">Dark</span>
+      </button>
     </header>
 
     <!-- ========================================================= -->
@@ -135,18 +129,18 @@
         <div class="appendix-block">
           <h3>Acronyms</h3>
           <ul>
-            <li><strong>DC</strong> — <a href="https://2e.aonprd.com/Rules.aspx?ID=2627">Difficulty Class</a></li>
-            <li><strong>EL</strong> — Effective Level: by default this is your level -2 for <a href="https://lorespire.paizo.com/tiki-index.php?page=Guide-to-Organized-Play:-Pathfinder-Society---Second-Edition#Downtime">Downtime</a></li>
-            <li><strong>PF2</strong> — Pathfinder Second Edition</li>
-            <li><strong>SF2</strong> — Starfinder Second Edition</li>
-            <li><strong>HHST</strong> — <a href="https://lorespire.paizo.com/tiki-index.php?page=pfs2guide._.Achievement-Points-Boon-List#Storied_Talent_Horizon_Hunters_">Horizon Hunters: Storied Talent</a> (boon)</li>
+            <li><strong>DC</strong> - <a href="https://2e.aonprd.com/Rules.aspx?ID=2627">Difficulty Class</a></li>
+            <li><strong>EL</strong> - Effective Level: by default this is your level -2 for <a href="https://lorespire.paizo.com/tiki-index.php?page=Guide-to-Organized-Play:-Pathfinder-Society---Second-Edition#Downtime">Downtime</a></li>
+            <li><strong>PF2</strong> - Pathfinder Second Edition</li>
+            <li><strong>SF2</strong> - Starfinder Second Edition</li>
+            <li><strong>HHST</strong> - <a href="https://lorespire.paizo.com/tiki-index.php?page=pfs2guide._.Achievement-Points-Boon-List#Storied_Talent_Horizon_Hunters_">Horizon Hunters: Storied Talent</a> (boon)</li>
           </ul>
         </div>
 
         <div class="appendix-block">
           <h3>Glossary</h3>
           <ul>
-            <li><strong>Proficiency</strong> — TEML: Trained, Expert, Master, Legendary</li>
+            <li><strong>Proficiency</strong> - TEML: Trained, Expert, Master, Legendary</li>
           </ul>
         </div>
 

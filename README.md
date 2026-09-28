@@ -1,38 +1,45 @@
 # Outrider's Pathfinder Projects <img src="img/icon.webp" align="center" width="72" height="72"/>
 
-A collection of small, focused tools for Pathfinder 2e and Starfinder 2e.  
-Each tool is self‑contained so GMs and players can clone only what they need.
+Small, focused tools for Pathfinder 2e and Starfinder 2e play.
+Each web tool is self-contained, so GMs and players can copy only what they need.
+
+**Live site:** https://0utrider.github.io/pathfinder/
 
 ---
 
-## Project List
+## Web Tools
 
-- **[Challenge Point Calculator](challenge/index.html)**
-  A tool for calculating Pathfinder Society (2e) scaling and difficulty, with mobile‑friendly layout.
-- **[Downtime Calculator](downtime/index.html)**
-  A streamlined tool for calculating Pathfinder Society and Starfinder Society (2e) downtime income, with mobile‑friendly layout and copy‑to‑clipboard summaries.
-- **[Ledge Cover LOS](ledgecover/index.html)**
-  A convenient tool for calculating Pathfinder & Starfinder (2e) cover when a ledge is involved.
+- **[Challenge Point Calculator](challenge/index.html)** ([readme](challenge/README.md))
+  Pathfinder Society (2e) scaling and difficulty, with a mobile-friendly layout.
+- **[Downtime Calculator](downtime/index.html)** ([readme](downtime/readme.md))
+  Pathfinder Society and Starfinder Society (2e) downtime income, with copy-to-clipboard summaries.
+- **[Ledge Cover LOS](ledgecover/index.html)** ([readme](ledgecover/README.md))
+  Pathfinder and Starfinder (2e) cover and line of sight when a ledge is involved.
+
+All three share one look: light and dark themes (the choice is remembered across tools), a violet accent taken from the Outrider branding, and a clickable icon that returns to the landing page.
+
+## Foundry VTT Modules
+
+- **[Outrider's Web Tools](https://github.com/0utrider/outrider-web-tools)**
+  Opens the web tools above in popup windows from Foundry VTT, with launcher macros.
+- **[Outrider's Hero Points](https://github.com/0utrider/outrider-hero-points)**
+  Configurable Hero Point rerolls for PF2e and SF2e, with a polished-metal Hero Die and Pass the Torch.
 - **[Outrider's RNG](https://foundryvtt.com/packages/outrider-rng)**
-  A Foundry VTT module for generating more randomness in dice rolls using a crytographic generator.
-
-## Other Links
-
-- _Coming soon…_
+  A better random number generator for dice rolls, using WebCrypto.
+- **[Outrider's Stellar Attunement](https://github.com/0utrider/outrider-stellar-attunement)**
+  Solarian Stellar Attunement helper for SF2e that swaps token art to match.
+- **[Outrider's Cantrips](https://github.com/0utrider/outrider-cantrips)**
+  Custom spellcasting feats and rules modifications for PF2e.
 
 ---
-
-## Live Version
-
-You can view the live hosted version of this landing page here:  
-**https://0utrider.github.io/pathfinder/index.html**
 
 ## About This Repository
 
-This repo is structured so each tool lives in its own folder with its own assets, styles, and documentation.  
-The root directory contains only shared branding (like the logo) and this landing page.
+Each tool lives in its own folder with its own assets, styles, and documentation.
+The root directory holds the landing page, shared branding (the logo and favicons), and this readme.
 
-If you want to clone just a single tool, simply copy its folder into your own project — no parent‑level dependencies required.
+To use a single tool, copy its folder into your own project. No parent-level dependencies are required.
+The Buy Me a Coffee footer loads from the hosted site and is optional.
 
 ---
 
@@ -42,5 +49,5 @@ If you want to clone just a single tool, simply copy its folder into your own pr
 
 ## License
 
-GNU Public License.  
+GNU Public License.
 Feel free to fork, modify, and build on these tools for your own tables.

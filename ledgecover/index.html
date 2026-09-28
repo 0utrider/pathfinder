@@ -3,61 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ledge line of sight — PF2e SF2e calculator</title>
+<title>Ledge line of sight - PF2e SF2e calculator</title>
+<script>try{var t=localStorage.getItem('outrider-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
 <style>
-  :root{
-    --bg:#14181f; --surface:#1c222b; --surface-2:#232a35; --border:#333c49;
-    --text:#e7e4db; --text-dim:#9aa4b2; --text-faint:#6b7684;
-    --accent:#c98a3e; --accent-dim:#8a5f2c;
-    --green:#4c9a63; --green-text:#a8d6b6;
-    --red:#c1503f; --red-text:#f0b3ab;
-    --amber:#d4a24c; --amber-text:#f0d29b;
-    --radius:8px;
-    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    --sans: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  }
-  @media (prefers-color-scheme: light){
-    :root:not([data-theme="dark"]){
-      --bg:#f3f1ea; --surface:#ffffff; --surface-2:#f7f5ee; --border:#d8d4c6;
-      --text:#242220; --text-dim:#5c584f; --text-faint:#8a8578;
-      --accent:#9a6323; --accent-dim:#c98a3e;
-      --green:#2f7a48; --green-text:#1f5533;
-      --red:#a5372a; --red-text:#7a281e;
-      --amber:#93701f; --amber-text:#6e5416;
-    }
-  }
-  :root[data-theme="light"]{
-    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#f7f5ee; --border:#d8d4c6;
-    --text:#242220; --text-dim:#5c584f; --text-faint:#8a8578;
-    --accent:#9a6323; --accent-dim:#c98a3e;
+/* Outrider theme: shared tokens, header and theme toggle. Each tool keeps its own copy. */
+:root{
+  --bg:#14181f; --surface:#1c222b; --surface-2:#232a35; --border:#333c49;
+  --text:#e7e4db; --text-dim:#9aa4b2; --text-faint:#6b7684;
+  --brand:#7000d6; --brand-hover:#8f00ff; --on-brand:#ffffff;
+  --accent:#b98cff; --accent-soft:rgba(185,140,255,0.16);
+  --green:#4c9a63; --green-text:#a8d6b6;
+  --red:#c1503f; --red-text:#f0b3ab;
+  --amber:#d4a24c; --amber-text:#f0d29b;
+  --shadow:0 4px 14px rgba(0,0,0,0.35);
+  --cv-none:#4c9a63; --cv-lesser:#9db544; --cv-standard:#d4a24c; --cv-greater:#e07b3c; --cv-blocked:#c1503f;
+  --radius:8px;
+  --mono:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --sans:-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --head:"Cinzel", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#e8eaef; --surface:#ffffff; --surface-2:#f1f2f6; --border:#cdd1db;
+    --text:#22242c; --text-dim:#545a6b; --text-faint:#7f8598;
+    --accent:#7000d6; --accent-soft:rgba(112,0,214,0.10);
     --green:#2f7a48; --green-text:#1f5533;
     --red:#a5372a; --red-text:#7a281e;
     --amber:#93701f; --amber-text:#6e5416;
+    --shadow:0 4px 14px rgba(40,50,80,0.14);
+    --cv-none:#2f7a48; --cv-lesser:#6f8a1c; --cv-standard:#93701f; --cv-greater:#b5501c; --cv-blocked:#a5372a;
+    color-scheme:light;
   }
-  *{box-sizing:border-box;}
-  body{
-    margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
-    line-height:1.5; padding:0 0 60px;
-  }
-  header{
-    padding:32px 24px 20px; max-width:1180px; margin:0 auto;
-    border-bottom:1px solid var(--border);
-    display:flex; justify-content:space-between; align-items:flex-start; gap:20px;
-  }
-  header h1{
-    font-family:var(--serif); font-weight:400; font-size:28px; margin:0 0 6px;
-    letter-spacing:0.2px;
-  }
-  header p{ margin:0; color:var(--text-dim); font-size:14.5px; max-width:640px; }
-  #themeToggle{
-    flex-shrink:0; display:flex; align-items:center; gap:7px;
-    background:var(--surface); border:1px solid var(--border); color:var(--text-dim);
-    border-radius:20px; padding:7px 14px 7px 12px; font-size:13px; font-family:var(--sans);
-    cursor:pointer;
-  }
-  #themeToggle:hover{ color:var(--text); border-color:var(--text-faint); }
-  #themeToggle svg{ width:15px; height:15px; }
+}
+:root[data-theme="light"]{
+  --bg:#e8eaef; --surface:#ffffff; --surface-2:#f1f2f6; --border:#cdd1db;
+  --text:#22242c; --text-dim:#545a6b; --text-faint:#7f8598;
+  --accent:#7000d6; --accent-soft:rgba(112,0,214,0.10);
+  --green:#2f7a48; --green-text:#1f5533;
+  --red:#a5372a; --red-text:#7a281e;
+  --amber:#93701f; --amber-text:#6e5416;
+  --shadow:0 4px 14px rgba(40,50,80,0.14);
+  --cv-none:#2f7a48; --cv-lesser:#6f8a1c; --cv-standard:#93701f; --cv-greater:#b5501c; --cv-blocked:#a5372a;
+  color-scheme:light;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+body{
+  margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
+  line-height:1.5;
+}
+a{ color:var(--accent); }
+a:hover{ color:var(--brand-hover); }
+:root[data-theme="dark"] a:hover{ color:#d3b8ff; }
+h1,h2,h3{ font-family:var(--head); }
+.site-header{
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  max-width:1180px; margin:0 auto; padding:24px 24px 18px;
+  border-bottom:1px solid var(--border);
+}
+.brand{ flex-shrink:0; display:block; line-height:0; border-radius:12px; }
+.brand img{ width:56px; height:56px; object-fit:contain; }
+.brand:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+.head-text{ flex:1; min-width:200px; }
+.site-header h1{
+  font-size:1.5rem; font-weight:600; letter-spacing:0.05em; margin:0 0 4px;
+  text-transform:uppercase; color:var(--text);
+}
+.site-header p{ margin:0; color:var(--text-dim); font-size:14.5px; max-width:640px; }
+#themeToggle{
+  flex-shrink:0; display:flex; align-items:center; gap:7px;
+  background:var(--surface); border:1px solid var(--border); color:var(--text-dim);
+  border-radius:20px; padding:7px 14px 7px 12px; font-size:13px; font-family:var(--sans);
+  cursor:pointer;
+}
+#themeToggle:hover{ color:var(--text); border-color:var(--accent); }
+#themeToggle:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+#themeToggle svg{ width:15px; height:15px; }
+.btn{
+  background:var(--brand); color:var(--on-brand); border:1px solid transparent;
+  border-radius:6px; padding:8px 14px; font-size:14px; font-family:var(--sans);
+  font-weight:600; cursor:pointer;
+}
+.btn:hover{ background:var(--brand-hover); }
+.btn-secondary{
+  background:transparent; color:var(--accent); border:1px solid var(--accent);
+  border-radius:6px; padding:8px 14px; font-size:14px; font-family:var(--sans);
+  font-weight:600; cursor:pointer;
+}
+.btn-secondary:hover{ background:var(--accent-soft); }
   main{
     max-width:1180px; margin:28px auto 0; padding:0 24px;
     display:grid; grid-template-columns: 360px 1fr; gap:24px;
@@ -70,8 +111,8 @@
   }
   .panel + .panel{ margin-top:20px; }
   .panel h2{
-    font-family:var(--serif); font-weight:400; font-size:17px; margin:0 0 14px;
-    color:var(--text);
+    font-family:var(--head); font-weight:600; font-size:15px; letter-spacing:0.04em; margin:0 0 14px;
+    color:var(--accent);
   }
   .field{ margin-bottom:14px; }
   .field:last-child{ margin-bottom:0; }
@@ -103,18 +144,21 @@
     padding:18px 20px; border-radius:var(--radius); border:1px solid var(--border);
     margin-bottom:20px;
   }
-  .verdict.full{ background:rgba(76,154,99,0.12); border-color:var(--green); }
-  .verdict.none{ background:rgba(193,80,63,0.12); border-color:var(--red); }
-  .verdict.partial{ background:rgba(212,162,76,0.12); border-color:var(--amber); }
-  .verdict .headline{ font-family:var(--serif); font-size:19px; margin-bottom:6px; }
+  /* Verdict color follows the cover level: green (none) > lime (lesser) > amber (standard) > orange (greater) > red (no line of effect) */
+  .verdict.full{ background:color-mix(in srgb, var(--cv-none) 14%, transparent); border-color:var(--cv-none); }
+  .verdict.lesser{ background:color-mix(in srgb, var(--cv-lesser) 14%, transparent); border-color:var(--cv-lesser); }
+  .verdict.standard{ background:color-mix(in srgb, var(--cv-standard) 14%, transparent); border-color:var(--cv-standard); }
+  .verdict.greater{ background:color-mix(in srgb, var(--cv-greater) 14%, transparent); border-color:var(--cv-greater); }
+  .verdict.none{ background:color-mix(in srgb, var(--cv-blocked) 14%, transparent); border-color:var(--cv-blocked); }
+  .verdict .headline{ font-family:var(--head); font-weight:600; font-size:17px; letter-spacing:0.03em; margin-bottom:6px; }
   .verdict .sub{ font-size:13.5px; color:var(--text-dim); }
   .verdict .sub strong{ color:var(--text); font-weight:600; }
 
   .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; align-items:start; }
   @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
   .col-heading{
-    font-family:var(--serif); font-weight:400; font-size:15px; margin:0 0 10px;
-    color:var(--text-dim);
+    font-family:var(--head); font-weight:600; font-size:13.5px; letter-spacing:0.04em; margin:0 0 10px;
+    color:var(--accent);
   }
   .col-heading .col-sub{ font-family:var(--sans); font-size:12px; color:var(--text-faint); }
 
@@ -150,10 +194,13 @@
 </head>
 <body>
 
-<header>
-  <h1>Ledge Line of Sight</h1>
-  <p>Pathfinder &amp; Starfinder 2e sightline calculator for a creature below a ledge vs. one on it.</p>
-  <button id="themeToggle" type="button" aria-pressed="false">
+<header class="site-header">
+  <a class="brand" href="https://0utrider.github.io/pathfinder/" title="Outrider's Pathfinder Projects"><img src="img/icon.webp" alt="Outrider's Pathfinder Projects home"></a>
+  <div class="head-text">
+    <h1>Ledge Line of Sight</h1>
+    <p>Pathfinder &amp; Starfinder 2e sightline calculator for a creature below a ledge vs. one on it.</p>
+  </div>
+  <button id="themeToggle" type="button" aria-pressed="true">
     <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
     <span id="themeLabel">Dark</span>
   </button>
@@ -174,12 +221,12 @@
       <div class="field">
         <label for="lowSize">Size (sets a default height)</label>
         <select id="lowSize">
-          <option value="2.5">Tiny — 2.5 ft</option>
-          <option value="5">Small — 5 ft</option>
-          <option value="5" selected>Medium — 5 ft</option>
-          <option value="10">Large — 10 ft</option>
-          <option value="15">Huge — 15 ft</option>
-          <option value="20">Gargantuan — 20 ft</option>
+          <option value="2.5">Tiny - 2.5 ft</option>
+          <option value="5">Small - 5 ft</option>
+          <option value="5" selected>Medium - 5 ft</option>
+          <option value="10">Large - 10 ft</option>
+          <option value="15">Huge - 15 ft</option>
+          <option value="20">Gargantuan - 20 ft</option>
         </select>
         <p class="hint">Size is an approximation of height, rounded to nearest 5. Adjust below if the creature is unusually tall or squat.</p>
       </div>
@@ -204,12 +251,12 @@
       <div class="field">
         <label for="highSize">Size (sets a default height)</label>
         <select id="highSize">
-          <option value="2.5">Tiny — 2.5 ft</option>
-          <option value="5">Small — 5 ft</option>
-          <option value="5" selected>Medium — 5 ft</option>
-          <option value="10">Large — 10 ft</option>
-          <option value="15">Huge — 15 ft</option>
-          <option value="20">Gargantuan — 20 ft</option>
+          <option value="2.5">Tiny - 2.5 ft</option>
+          <option value="5">Small - 5 ft</option>
+          <option value="5" selected>Medium - 5 ft</option>
+          <option value="10">Large - 10 ft</option>
+          <option value="15">Huge - 15 ft</option>
+          <option value="20">Gargantuan - 20 ft</option>
         </select>
       </div>
       <div class="row2">
@@ -245,21 +292,21 @@
 
     <div class="grid2">
       <div>
-        <h2 class="col-heading">Higher creature <span class="col-sub">(seen from below)</span></h2>
-        <div id="verdictHigh" class="verdict"></div>
-        <div class="panel">
-          <p class="cover-level" id="coverLevelHigh"></p>
-          <p class="cover-mod" id="coverModHigh"></p>
-          <p class="cover-reason" id="coverReasonHigh"></p>
-        </div>
-      </div>
-      <div>
         <h2 class="col-heading">Lower creature <span class="col-sub">(seen from above)</span></h2>
         <div id="verdictLow" class="verdict"></div>
         <div class="panel">
           <p class="cover-level" id="coverLevelLow"></p>
           <p class="cover-mod" id="coverModLow"></p>
           <p class="cover-reason" id="coverReasonLow"></p>
+        </div>
+      </div>
+      <div>
+        <h2 class="col-heading">Higher creature <span class="col-sub">(seen from below)</span></h2>
+        <div id="verdictHigh" class="verdict"></div>
+        <div class="panel">
+          <p class="cover-level" id="coverLevelHigh"></p>
+          <p class="cover-mod" id="coverModHigh"></p>
+          <p class="cover-reason" id="coverReasonHigh"></p>
         </div>
       </div>
     </div>
@@ -288,26 +335,30 @@
 <script>
 const $ = id => document.getElementById(id);
 
-// --- theme toggle ---
-const SUN = 'M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 100 8 4 4 0 000-8z';
-const MOON = 'M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z';
-function applyTheme(mode){
-  document.documentElement.dataset.theme = mode;
-  $('themeIcon').innerHTML = `<path d="${mode==='dark'?MOON:SUN}"/>`;
-  $('themeLabel').textContent = mode==='dark' ? 'Dark' : 'Light';
-  $('themeToggle').setAttribute('aria-pressed', mode==='dark');
-  try{ localStorage.setItem('los-theme', mode); }catch(e){}
-}
-let startTheme = 'dark';
-try{
-  const saved = localStorage.getItem('los-theme');
-  if (saved === 'light' || saved === 'dark') startTheme = saved;
-  else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) startTheme = 'light';
-}catch(e){}
-applyTheme(startTheme);
-$('themeToggle').addEventListener('click', ()=>{
-  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
-});
+// --- theme toggle (shared look across the tools; key is shared per origin) ---
+(function(){
+  const SUN = 'M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 100 8 4 4 0 000-8z';
+  const MOON = 'M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z';
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  function applyTheme(mode, save){
+    root.dataset.theme = mode;
+    document.getElementById('themeIcon').innerHTML = '<path d="' + (mode === 'dark' ? MOON : SUN) + '"/>';
+    document.getElementById('themeLabel').textContent = mode === 'dark' ? 'Dark' : 'Light';
+    btn.setAttribute('aria-pressed', mode === 'dark');
+    if (save) { try { localStorage.setItem('outrider-theme', mode); } catch (e) {} }
+  }
+  let start = 'dark';
+  try {
+    const saved = localStorage.getItem('outrider-theme');
+    if (saved === 'light' || saved === 'dark') start = saved;
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) start = 'light';
+  } catch (e) {}
+  applyTheme(start, false);
+  btn.addEventListener('click', function(){
+    applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true);
+  });
+})();
 
 const ledgeH = $('ledgeH'), lowSize=$('lowSize'), lowHeight=$('lowHeight'), lowDist=$('lowDist'), lowBase=$('lowBase');
 const highSize=$('highSize'), highHeight=$('highHeight'), highDist=$('highDist'), highFly=$('highFly'), hoverField=$('hoverField'), hoverH=$('hoverH');
@@ -406,19 +457,19 @@ function recalc(){
       mod = 'No circumstance bonus from the ledge.';
       reason = `Every sightline clears the ledge regardless of stance, so the ${subject} is fully exposed. Other terrain or creatures could still grant cover separately.`;
     } else {
-      cls='partial'; headline='Partially visible';
+      headline='Partially visible';
       sub = `Definitely visible: <strong>${fmt(fracDef)}%</strong> of its height.<br>Visible from some stance: up to <strong>${fmt(fracPoss)}%</strong>.`;
       if (fracPoss < 15){
-        level = 'Greater cover (or no line of effect)';
+        cls='greater'; level = 'Greater cover (or no line of effect)';
         mod = '+4 circumstance bonus to AC, Reflex saves, and Stealth checks \u2014 or treat as fully blocked.';
       } else if (fracPoss < 50){
-        level = 'Standard cover';
+        cls='standard'; level = 'Standard cover';
         mod = '+2 circumstance bonus to AC, Reflex saves, and Stealth checks.';
       } else if (fracPoss < 90){
-        level = 'Lesser cover';
+        cls='lesser'; level = 'Lesser cover';
         mod = '+1 circumstance bonus to AC.';
       } else {
-        level = 'Little to no cover';
+        cls='full'; level = 'Little to no cover';
         mod = 'No reliable bonus \u2014 most of the target is exposed.';
       }
       reason = `Roughly ${fmt(fracDef)}\u2013${fmt(fracPoss)}% of the ${subject}\u2019s height clears the edge, depending on exactly where within its space the viewer is looking from.`;
@@ -540,5 +591,6 @@ function drawDiagram(xA,yA0,yA1,xB,yB0,yB1,H,results,strict,loose,strictA,looseA
 
 recalc();
 </script>
+<script src="https://0utrider.github.io/pathfinder/coffeefooter/footer.js" data-mode="full" defer></script>
 </body>
 </html>
