@@ -39,26 +39,27 @@
             <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
             <span id="themeLabel">Dark</span>
         </button>
+        <button id="installBtn" type="button" hidden>Install app</button>
     </header>
 
     <main class="wrap">
         <section>
             <h2>Web Tools</h2>
             <ul class="cards">
-                <li><a target="_blank" rel="noopener noreferrer" href="challenge/index.html"><span class="name">Challenge Point Calculator</span><span class="desc">Pathfinder Society (2e) scaling and difficulty, for PFS2.</span></a></li>
-                <li><a target="_blank" rel="noopener noreferrer" href="downtime/index.html"><span class="name">Downtime Calculator</span><span class="desc">Downtime income for PFS2 and SFS2, with copy-to-clipboard summaries.</span></a></li>
-                <li><a target="_blank" rel="noopener noreferrer" href="ledgecover/index.html"><span class="name">Ledge Cover Line of Sight</span><span class="desc">Cover and line of sight when a ledge is involved, for PF2 and SF2.</span></a></li>
+                <li><a href="challenge/index.html"><span class="name">Challenge Point Calculator</span><span class="desc">Pathfinder Society (2e) scaling and difficulty, for PFS2.</span></a></li>
+                <li><a href="downtime/index.html"><span class="name">Downtime Calculator</span><span class="desc">Downtime income for PFS2 and SFS2, with copy-to-clipboard summaries.</span></a></li>
+                <li><a href="ledgecover/index.html"><span class="name">Ledge Cover Line of Sight</span><span class="desc">Cover and line of sight when a ledge is involved, for PF2 and SF2.</span></a></li>
             </ul>
         </section>
 
         <section>
             <h2>Foundry VTT Modules</h2>
             <ul class="cards">
-                <li><a href="https://github.com/0utrider/outrider-web-tools" target="_blank" rel="noopener noreferrer"><span class="name">Outrider's Web Tools</span><span class="desc">Opens these web tools in popup windows from Foundry VTT, with launcher macros.</span></a></li>
-                <li><a href="https://github.com/0utrider/outrider-hero-points" target="_blank" rel="noopener noreferrer"><span class="name">Outrider's Hero Points</span><span class="desc">Configurable Hero Point rerolls for PF2e and SF2e, with a polished-metal Hero Die and Pass the Torch.</span></a></li>
-                <li><a href="https://foundryvtt.com/packages/outrider-rng" target="_blank" rel="noopener noreferrer"><span class="name">Outrider's RNG</span><span class="desc">A better random number generator for dice rolls, using WebCrypto.</span></a></li>
-                <li><a href="https://github.com/0utrider/outrider-stellar-attunement" target="_blank" rel="noopener noreferrer"><span class="name">Outrider's Stellar Attunement</span><span class="desc">Solarian Stellar Attunement helper for SF2e that swaps token art to match.</span></a></li>
-                <li><a href="https://github.com/0utrider/outrider-cantrips" target="_blank" rel="noopener noreferrer"><span class="name">Outrider's Cantrips</span><span class="desc">Custom spellcasting feats and rules modifications for PF2e.</span></a></li>
+                <li><a href="https://github.com/0utrider/outrider-web-tools"><span class="name">Outrider's Web Tools</span><span class="desc">Opens these web tools in popup windows from Foundry VTT, with launcher macros.</span></a></li>
+                <li><a href="https://github.com/0utrider/outrider-hero-points"><span class="name">Outrider's Hero Points</span><span class="desc">Configurable Hero Point rerolls for PF2e and SF2e, with a polished-metal Hero Die and Pass the Torch.</span></a></li>
+                <li><a href="https://foundryvtt.com/packages/outrider-rng"><span class="name">Outrider's RNG</span><span class="desc">A better random number generator for dice rolls, using WebCrypto.</span></a></li>
+                <li><a href="https://github.com/0utrider/outrider-stellar-attunement"><span class="name">Outrider's Stellar Attunement</span><span class="desc">Solarian Stellar Attunement helper for SF2e that swaps token art to match.</span></a></li>
+                <li><a href="https://github.com/0utrider/outrider-cantrips"><span class="name">Outrider's Cantrips</span><span class="desc">Custom spellcasting feats and rules modifications for PF2e.</span></a></li>
             </ul>
         </section>
     </main>
@@ -88,6 +89,22 @@
         applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true);
       });
     })();
+
+// --- install as an app (shown only when the browser offers it) ---
+(function(){
+  const btn = document.getElementById('installBtn');
+  let deferred = null;
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault(); deferred = e; btn.hidden = false;
+  });
+  btn.addEventListener('click', function(){
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.finally(function(){ deferred = null; btn.hidden = true; });
+  });
+  window.addEventListener('appinstalled', function(){ btn.hidden = true; });
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function(){});
+})();
     </script>
     <script src="https://0utrider.github.io/pathfinder/coffeefooter/footer.js" data-mode="button" defer></script>
 </body>
