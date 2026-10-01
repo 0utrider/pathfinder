@@ -24,7 +24,7 @@ All three share one look: light and dark themes (the choice is remembered across
   Opens the web tools above in popup windows from Foundry VTT, with launcher macros.
 - **[Outrider's Hero Points](https://github.com/0utrider/outrider-hero-points)**
   Configurable Hero Point rerolls for PF2e and SF2e, with a polished-metal Hero Die and Pass the Torch.
-- **[Outrider's RNG](https://foundryvtt.com/packages/outrider-rng)**
+- **[Outrider's RNG](https://github.com/0utrider/outrider-rng)**
   A better random number generator for dice rolls, using WebCrypto.
 
 ---
