@@ -22,14 +22,14 @@ All three share one look: light and dark themes (the choice is remembered across
 
 - **[Outrider's Web Tools](https://github.com/0utrider/outrider-web-tools)**
   Opens the web tools above in popup windows from Foundry VTT, with launcher macros.
+- **[Outrider's Cantrips](https://github.com/0utrider/outrider-cantrips)**
+  Collection of useful cantrip enhancements for RAW and Homebrew.
 - **[Outrider's Hero Points](https://github.com/0utrider/outrider-hero-points)**
   Configurable Hero Point rerolls for PF2e and SF2e, with a polished-metal Hero Die and Pass the Torch.
 - **[Outrider's RNG](https://github.com/0utrider/outrider-rng)**
   A better random number generator for dice rolls, using WebCrypto.
 - **[Outrider's Stellar Attunement](https://github.com/0utrider/outrider-stellar-attunement)**
   SF2e Solarian helper. Cycles Stellar Attunement and keeps token art in sync.
-- **[Outrider's Cantrips](https://github.com/0utrider/outrider-cantrips)**
-  Collection of useful cantrip enhancements for RAW and Homebrew.
 
 ---
 
