@@ -10,7 +10,7 @@ Each web tool is self-contained, so GMs and players can copy only what they need
 ## Web Tools
 
 - **[Challenge Point Calculator](challenge/index.html)** ([readme](challenge/README.md))
-  Pathfinder Society (2e) scaling and difficulty, with a mobile-friendly layout.
+  Determine scaling difficulty for Pathfinder Society (2e) organized play.
 - **[Downtime Calculator](downtime/index.html)** ([readme](downtime/readme.md))
   Pathfinder Society and Starfinder Society (2e) downtime income, with copy-to-clipboard summaries.
 - **[Ledge Cover LOS](ledgecover/index.html)** ([readme](ledgecover/README.md))
