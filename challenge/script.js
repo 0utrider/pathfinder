@@ -30,6 +30,7 @@ const footnote1 = document.getElementById("footnote1");
 const footnote2 = document.getElementById("footnote2");
 const footnote3 = document.getElementById("footnote3");
 const footnote4 = document.getElementById("footnote4");
+const footnote5 = document.getElementById("footnote5");
 
 // Footnote 4 spans
 const fn4_low = document.getElementById("fn4_low");
@@ -165,45 +166,64 @@ function updateNumPregensDisplay() {
 // ===============================
 // EVENT LISTENERS
 // ===============================
-levelMin.addEventListener("input", () => {
-    enforceLevelRangeRules();
-    updateLevelRangeDisplay();
-    validateAll();
-});
+levelMin.addEventListener("input", () => refreshAll("min"));
+levelMax.addEventListener("input", () => refreshAll("max"));
 
-levelMax.addEventListener("input", () => {
-    enforceLevelRangeRules();
-    updateLevelRangeDisplay();
-    validateAll();
-});
+numPlayers.addEventListener("input", () => refreshAll());
+numPregens.addEventListener("input", () => refreshAll());
 
-numPlayers.addEventListener("input", () => {
+
+// ===============================
+// GLOBAL REFRESH
+// Any input, change or click anywhere on the page, plus a page restore
+// from the back/forward cache, re-runs everything so no output can be
+// left stale.
+// ===============================
+let refreshQueued = false;
+
+function refreshAll(source) {
+    refreshQueued = false;
+    enforceLevelRangeRules(source);
+    updateLevelRangeDisplay();
     updateNumPlayersDisplay();
-    validateAll();
-});
-
-numPregens.addEventListener("input", () => {
     updateNumPregensDisplay();
     validateAll();
+}
+
+function queueRefresh() {
+    if (refreshQueued) return;
+    refreshQueued = true;
+    requestAnimationFrame(() => refreshAll());
+}
+
+["input", "change", "click", "keyup"].forEach(type => {
+    document.addEventListener(type, queueRefresh);
+});
+window.addEventListener("pageshow", queueRefresh);
+document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) queueRefresh();
 });
 
 
 // ===============================
 // LEVEL RANGE RULES
 // ===============================
-function enforceLevelRangeRules() {
+// Range is at most 4 levels wide (max - min <= 3). Dragging the max
+// slider drags the min slider along; dragging min drags max along.
+function enforceLevelRangeRules(source) {
     let min = parseInt(levelMin.value);
     let max = parseInt(levelMax.value);
 
-    if (min > max) {
-        max = min;
-        levelMax.value = max;
+    if (source === "max") {
+        if (max < min) min = max;
+        if (max > min + 3) min = max - 3;
+        levelMin.value = min;
+        return;
     }
 
-    if (max > min + 3) {
-        max = min + 3;
-        levelMax.value = max;
-    }
+    if (min > max) max = min;
+    if (max > min + 3) max = min + 3;
+    levelMax.value = max;
 }
 
 
@@ -268,10 +288,10 @@ function checkPartyLegality() {
     let legal = true;
     let hardmode = false;
 
-    if (players === 2 && min > 5) legal = false;
+    if (players === 2 && min > 7) legal = false;
     if (players === 2 && pregens === 0) legal = false;
 
-    if (players === 3 && pregens === 0 && min >= 6) {
+    if (players === 3 && pregens === 0 && min >= 8) {
         hardmode = true;
     }
 
@@ -292,7 +312,7 @@ function updateFootnotesBasic() {
     );
 
     if (players === 2) {
-        if (min >= 7) footnote1.classList.add("fn-red");
+        if (min > 7) footnote1.classList.add("fn-red");
         else footnote1.classList.add("fn-purple");
     }
 
@@ -300,7 +320,7 @@ function updateFootnotesBasic() {
         footnote2.classList.add("fn-purple");
     }
 
-    if (players === 3 && pregens === 0 && min >= 6) {
+    if (players === 3 && pregens === 0 && min >= 8) {
         footnote3.classList.add("fn-purple");
     }
 }
@@ -346,7 +366,20 @@ function updateFootnote4(totalCPValue) {
 // ===============================
 // INVALID STATE HANDLING
 // ===============================
+function setInferredNote(show) {
+    footnote5.style.display = show ? "list-item" : "none";
+    footnote5.classList.toggle("fn-purple", show);
+}
+
 function showInvalidState() {
+    setInferredNote(false);
+    cpFromPCs.textContent = "--";
+    cpPregens.textContent = "--";
+    cpPregens.classList.add("greyed");
+    cpPregens.classList.remove("pregen-active");
+    pregenLabel.textContent = `${formatPregenLabel(getNumPregens())}:`;
+    hardmodeRow.style.display = "none";
+    updateFootnote4(NaN);
     totalCP.textContent = "--";
     playDirection.textContent = "";
     totalCP.classList.remove("valid-total");
@@ -427,14 +460,14 @@ const pregenTable = [
     { min: 5, players: 2, cp: "Any",   pregens: "2 lvl 5", mod: 4 },
     { min: 5, players: 3, cp: "Any",   pregens: "1 lvl 5", mod: 2 },
 
-    { min: 7, players: 3, cp: "<12",   pregens: "none",    mod: 2 },
-    { min: 7, players: 3, cp: "12+",   pregens: "none",    mod: 4 }
+    // Not in the guide: inferred from the pattern above (a pregen at the minimum level is +2)
+    { min: 7, players: 2, cp: "Any",   pregens: "2 lvl 7", mod: 4, inferred: true },
+    { min: 7, players: 3, cp: "Any",   pregens: "1 lvl 7", mod: 2, inferred: true }
 ];
 
 function lookupPregenRow(baseCP, scenarioMin, players) {
     return pregenTable.find(row => {
-        if (row.min === 7 && scenarioMin < 7) return false;
-        if (row.min !== 7 && row.min !== scenarioMin) return false;
+        if (row.min !== scenarioMin) return false;
         if (row.players !== players) return false;
 
         if (row.cp === "Any") return true;
@@ -482,9 +515,11 @@ function calculateCP(hardmodeActive) {
             pregenLevel = parts[1].trim();
         }
 
+        const inferred = !!(row && row.inferred);
         pregenLabel.textContent = pregenLevel
-            ? `${pregenText}, level ${pregenLevel}:`
+            ? `${pregenText}, level ${pregenLevel}${inferred ? " (inferred)" : ""}:`
             : `${pregenText}:`;
+        setInferredNote(inferred);
 
         pregenMod = row ? row.mod : 0;
 
@@ -493,6 +528,7 @@ function calculateCP(hardmodeActive) {
         cpPregens.classList.add("pregen-active");
 
     } else {
+        setInferredNote(false);
         pregenLabel.textContent = `${pregenText}:`;
         cpPregens.textContent = "--";
         cpPregens.classList.add("greyed");
@@ -501,6 +537,7 @@ function calculateCP(hardmodeActive) {
 
 
     // HARDMODE
+    // No pregens in hardmode, so no CP adjustment
     const hardmodeMod = 0;
 
     if (hardmodeActive) {

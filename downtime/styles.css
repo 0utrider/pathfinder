@@ -41,7 +41,7 @@ body{
   margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
   line-height:1.5;
 }
-a{ color:var(--accent); }
+a{ color:var(--accent); text-decoration:none; }
 a:hover{ color:var(--brand-hover); }
 :root[data-theme="dark"] a:hover{ color:#d3b8ff; }
 h1,h2,h3{ font-family:var(--head); }
@@ -207,7 +207,9 @@ input[type="text"]:focus, input[type="number"]:focus{ outline:2px solid var(--ac
 
 /* Appendix */
 .appendix{ margin-top:0.75rem; }
-.appendix-block{ margin-bottom:0.75rem; }
+.appendix-block{ margin-bottom:0.75rem; padding-top:0.9rem; }
+.home-link{ margin:0.5rem 0 1rem; font-size:0.9rem; }
+.table-unit{ margin:0 0 0.5rem; font-size:0.85rem; color:var(--text-dim); }
 .appendix-block h3{ font-size:0.95rem; font-weight:600; letter-spacing:0.04em; margin-bottom:0.25rem; }
 #downtime-table-container{ overflow:hidden; }
 .downtime-table{ width:100%; border-collapse:collapse; font-size:0.85rem; }

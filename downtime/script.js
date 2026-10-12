@@ -15,8 +15,50 @@ document.addEventListener("DOMContentLoaded", () => {
   initCharacters();
   initSummaryCopy();
   initAppendixToggle();
+  initRefreshChecks();
   loadCSVs();
 });
+
+// ============================================================
+//  GLOBAL REFRESH
+//  Any input, change or click anywhere on the page, plus a page
+//  restore from the back/forward cache, re-runs everything so
+//  no output can be left stale.
+// ============================================================
+
+let refreshQueued = false;
+
+function refreshAll() {
+  refreshQueued = false;
+
+  document.querySelectorAll(".character-card").forEach((card) => {
+    const index = card.dataset.index;
+    const levelInput = card.querySelector(`#char-level-${index}`);
+    const daysInput = card.querySelector(`#char-days-${index}`);
+    validateLevel(levelInput);
+    validateDays(daysInput);
+    handleRowVisibility(Number(index));
+    recalcRow(card);
+  });
+
+  updateSummary();
+}
+
+function queueRefresh() {
+  if (refreshQueued) return;
+  refreshQueued = true;
+  requestAnimationFrame(refreshAll);
+}
+
+function initRefreshChecks() {
+  ["input", "change", "click", "keyup"].forEach((type) => {
+    document.addEventListener(type, queueRefresh);
+  });
+  window.addEventListener("pageshow", queueRefresh);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) queueRefresh();
+  });
+}
 
 // --- theme toggle (shared look across the tools; key is shared per origin) ---
 (function(){
@@ -432,6 +474,7 @@ function loadCSVs() {
       pf2Table = parseCSV(pf2Text);
       sf2Table = parseCSV(sf2Text);
       renderDowntimeTable();
+      refreshAll();
     })
     .catch(() => {
       showErrorBanner();
@@ -716,6 +759,9 @@ function initAppendixToggle() {
 function renderDowntimeTable() {
   const container = document.getElementById("downtime-table-container");
   container.innerHTML = "";
+
+  const unitLabel = document.getElementById("table-unit");
+  if (unitLabel) unitLabel.textContent = currentSystem === PF2 ? "Gold per day" : "Credits per day";
 
   const tableData = currentSystem === PF2 ? pf2Table : sf2Table;
   if (!tableData) return;

@@ -25,6 +25,7 @@
   --amber:#d4a24c; --amber-text:#f0d29b;
   --shadow:0 4px 14px rgba(0,0,0,0.35);
   --cv-none:#4c9a63; --cv-lesser:#9db544; --cv-standard:#d4a24c; --cv-greater:#e07b3c; --cv-blocked:#c1503f;
+  --ln-cc:#4f7dff; --ln-cf:#8fc2ff; --ln-mid:#ff6b81; --ln-fc:#d6a3ff; --ln-ff:#9b4dff;
   --radius:8px;
   --mono:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   --sans:-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -41,6 +42,7 @@
     --amber:#93701f; --amber-text:#6e5416;
     --shadow:0 4px 14px rgba(40,50,80,0.14);
     --cv-none:#2f7a48; --cv-lesser:#6f8a1c; --cv-standard:#93701f; --cv-greater:#b5501c; --cv-blocked:#a5372a;
+    --ln-cc:#1f4fd1; --ln-cf:#4f9be0; --ln-mid:#d0334f; --ln-fc:#a96be0; --ln-ff:#6a1fc4;
     color-scheme:light;
   }
 }
@@ -53,6 +55,7 @@
   --amber:#93701f; --amber-text:#6e5416;
   --shadow:0 4px 14px rgba(40,50,80,0.14);
   --cv-none:#2f7a48; --cv-lesser:#6f8a1c; --cv-standard:#93701f; --cv-greater:#b5501c; --cv-blocked:#a5372a;
+  --ln-cc:#1f4fd1; --ln-cf:#4f9be0; --ln-mid:#d0334f; --ln-fc:#a96be0; --ln-ff:#6a1fc4;
   color-scheme:light;
 }
 *,*::before,*::after{ box-sizing:border-box; }
@@ -147,6 +150,7 @@ h1,h2,h3{ font-family:var(--head); }
   #diagram{ display:block; width:100%; height:auto; }
   .legend{ display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; font-size:12px; color:var(--text-dim); }
   .legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .swatch.dashed{ background:repeating-linear-gradient(90deg,var(--text-dim) 0 4px,transparent 4px 7px); }
   .swatch{ width:14px; height:3px; display:inline-block; border-radius:2px; }
 
   .verdict{
@@ -177,6 +181,9 @@ h1,h2,h3{ font-family:var(--head); }
 
   .linecheck{ display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border); font-size:13px; }
   .linecheck:last-child{ border-bottom:none; }
+  .linecheck .name{ display:inline-flex; align-items:center; gap:9px; }
+  .linecheck .chip{ width:16px; height:4px; border-radius:2px; flex-shrink:0; }
+  .line-sub{ margin:-8px 0 8px; }
   .tag{
     font-size:11px; padding:2px 8px; border-radius:20px; font-weight:600;
     letter-spacing:0.2px;
@@ -195,10 +202,10 @@ h1,h2,h3{ font-family:var(--head); }
   .eqbox .g{ color:var(--green-text); }
   .eqbox .r{ color:var(--red-text); }
 
-  footer{ max-width:1180px; margin:0 auto; padding:0 24px; }
-  footer p{ color:var(--text-faint); font-size:12px; }
-  footer a{ color:var(--accent); font-size:13px; text-decoration:none; }
-  footer a:hover{ text-decoration:underline; }
+  .fine-print{ max-width:1180px; margin:0 auto; padding:0 24px; }
+  .fine-print p{ color:var(--text-faint); font-size:12px; }
+  .fine-print a{ color:var(--accent); font-size:13px; text-decoration:none; }
+  .fine-print a:hover{ text-decoration:underline; }
 
 /* Compact header on phones */
 @media (max-width:600px){
@@ -306,8 +313,8 @@ h1,h2,h3{ font-family:var(--head); }
     <div class="diagram-wrap">
       <svg id="diagram" viewBox="0 0 680 400" role="img" aria-label="Side-view diagram of the two creatures relative to the ledge, with sightlines colored by visibility"></svg>
       <div class="legend">
-        <span><span class="swatch" style="background:var(--green)"></span>clear sightline</span>
-        <span><span class="swatch" style="background:var(--red)"></span>blocked sightline</span>
+        <span><span class="swatch" style="background:var(--text-dim)"></span>solid line: clear sightline</span>
+        <span><span class="swatch dashed"></span>dashed line: blocked sightline</span>
         <span><span class="swatch" style="background:var(--amber)"></span>zone visible only from some stances (either body)</span>
       </div>
     </div>
@@ -334,7 +341,8 @@ h1,h2,h3{ font-family:var(--head); }
     </div>
 
     <div class="panel">
-      <h2>The four sightlines</h2>
+      <h2>The five sightlines</h2>
+      <p class="hint line-sub">Lower &harr; Higher</p>
       <div id="linechecks"></div>
     </div>
 
@@ -349,7 +357,8 @@ h1,h2,h3{ font-family:var(--head); }
   </div>
 </main>
 
-<footer>
+<footer class="fine-print">
+  <p>GMs have <a href="https://2e.aonprd.com/Rules.aspx?ID=2372" target="_blank" rel="noopener noreferrer">significant discretion</a> when determining cover. This tool is meant to inform that call and aid in adjudicating it, not to replace it.</p>
   <p>Assumes a simple vertical ledge (flat ground, flat top, one straight drop) with no other terrain in the way. Real terrain, creature reach, and GM adjudication all still apply.</p>
   <p><a href="https://0utrider.github.io/pathfinder/" target="_blank" rel="noopener noreferrer">&larr; Outrider's Pathfinder Tools</a></p>
 </footer>
@@ -429,12 +438,14 @@ function recalc(){
 
   $('hRef').textContent = fmt(H);
 
-  // Four corner sightlines
+  // Five sightlines: four corners plus center to center
+  const yA5 = (yA0 + yA1) / 2, yB5 = (yB0 + yB1) / 2;
   const combos = [
-    {label:'feet \u2194 feet', a:yA0, b:yB0},
-    {label:'feet \u2194 crown', a:yA0, b:yB1},
-    {label:'crown \u2194 feet', a:yA1, b:yB0},
-    {label:'crown \u2194 crown', a:yA1, b:yB1},
+    {label:'crown \u2194 crown', color:'var(--ln-cc)', a:yA1, b:yB1},
+    {label:'crown \u2194 feet', color:'var(--ln-cf)', a:yA1, b:yB0},
+    {label:'center \u2194 center', color:'var(--ln-mid)', a:yA5, b:yB5},
+    {label:'feet \u2194 crown', color:'var(--ln-fc)', a:yA0, b:yB1},
+    {label:'feet \u2194 feet', color:'var(--ln-ff)', a:yA0, b:yB0},
   ];
   const results = combos.map(c=>{
     const ph = pinchHeight(xA,c.a,xB,c.b);
@@ -530,7 +541,7 @@ function recalc(){
   // Line checks list
   $('linechecks').innerHTML = results.map(r=>`
     <div class="linecheck">
-      <span>${r.label}</span>
+      <span class="name"><span class="chip" style="background:${r.color}"></span>${r.label}</span>
       <span class="tag ${r.clear?'visible':'blocked'}">${r.clear?'clear':'blocked'}</span>
     </div>`).join('');
 
@@ -539,7 +550,7 @@ function recalc(){
     const phTxt = r.ph===null ? 'n/a (same horizontal position)' : `${fmt(r.ph)} ft`;
     const verdict = r.ph===null ? 'clear' : (r.clear ? 'clear' : 'blocked');
     const cls2 = verdict==='clear' ? 'g' : 'r';
-    return `${r.label.padEnd(14)} height at edge = ${phTxt.padEnd(22)} <span class="${cls2}">${verdict}</span>`;
+    return `${r.label.padEnd(16)} height at edge = ${phTxt.padEnd(22)} <span class="${cls2}">${verdict}</span>`;
   }).join('\n');
   $('eqbox').innerHTML =
 `<span class="k">Positions (ft, edge = x:0 / y:${fmt(H)})</span>
@@ -602,10 +613,9 @@ function drawDiagram(xA,yA0,yA1,xB,yB0,yB1,H,results,strict,loose,strictA,looseA
       <rect x="${bx}" y="${bandTop}" width="${w}" height="${bandBottom-bandTop}" fill="none" stroke="var(--border)" stroke-width="1" rx="3"/>`;
   }
 
-  const colorFor = clear => clear ? 'var(--green)' : 'var(--red)';
   const lineEls = results.map(r=>{
     const y1 = r.a, y2 = r.b;
-    return `<line x1="${px(xA)}" y1="${py(y1)}" x2="${px(xB)}" y2="${py(y2)}" stroke="${colorFor(r.clear)}" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.85"/>`;
+    return `<line x1="${px(xA)}" y1="${py(y1)}" x2="${px(xB)}" y2="${py(y2)}" stroke="${r.color}" stroke-width="1.1" ${r.clear ? '' : 'stroke-dasharray="4 4"'} opacity="0.9"/>`;
   }).join('');
 
   svg.setAttribute('viewBox', `0 0 680 ${Math.round(H_svg)}`);
