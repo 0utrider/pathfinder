@@ -128,6 +128,10 @@ function generatePlayerGrid() {
 
         input.addEventListener("input", () => validateAll());
 
+        // Select the whole value on focus so typing replaces it
+        input.addEventListener("focus", () => setTimeout(() => input.select(), 0));
+        input.addEventListener("mouseup", e => e.preventDefault());
+
         wrapper.appendChild(label);
         wrapper.appendChild(input);
         playerLevelContainer.appendChild(wrapper);

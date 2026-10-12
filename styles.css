@@ -83,7 +83,6 @@ h1,h2,h3{ font-family:var(--head); }
 
 /* Landing page */
 .site-header{ max-width:820px; padding-left:0; padding-right:0; }
-.brand{ pointer-events:none; }
 .wrap{ max-width:820px; margin:0 auto; padding:24px 16px 24px; }
 .wrap section{ margin-bottom:24px; }
 .wrap h2{
