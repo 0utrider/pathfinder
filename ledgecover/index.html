@@ -183,6 +183,7 @@ h1,h2,h3{ font-family:var(--head); }
   .linecheck:last-child{ border-bottom:none; }
   .linecheck .name{ display:inline-flex; align-items:center; gap:9px; }
   .linecheck .chip{ width:16px; height:4px; border-radius:2px; flex-shrink:0; }
+  .adjudication{ margin:0; font-size:13.5px; color:var(--text-dim); }
   .line-sub{ margin:-8px 0 8px; }
   .tag{
     font-size:11px; padding:2px 8px; border-radius:20px; font-weight:600;
@@ -347,6 +348,11 @@ h1,h2,h3{ font-family:var(--head); }
     </div>
 
     <div class="panel">
+      <h2>GM Adjudication</h2>
+      <p class="adjudication">GMs have <a href="https://2e.aonprd.com/Rules.aspx?ID=2372" target="_blank" rel="noopener noreferrer">significant discretion</a> when determining cover. This tool is meant to inform that call and aid in adjudicating it, not to replace it. The cover levels shown are suggestions based on how much of a target is visible as a guideline, not a rule.</p>
+    </div>
+
+    <div class="panel">
       <h2>The math</h2>
       <p class="hint">Edge sits at horizontal position 0, height <span id="hRef">20</span> ft. A sightline from point (x&#8321;,y&#8321;) to (x&#8322;,y&#8322;) clears the edge only if its height at x = 0 is at least the ledge height.</p>
       <details open>
@@ -358,7 +364,6 @@ h1,h2,h3{ font-family:var(--head); }
 </main>
 
 <footer class="fine-print">
-  <p>GMs have <a href="https://2e.aonprd.com/Rules.aspx?ID=2372" target="_blank" rel="noopener noreferrer">significant discretion</a> when determining cover. This tool is meant to inform that call and aid in adjudicating it, not to replace it.</p>
   <p>Assumes a simple vertical ledge (flat ground, flat top, one straight drop) with no other terrain in the way. Real terrain, creature reach, and GM adjudication all still apply.</p>
   <p><a href="https://0utrider.github.io/pathfinder/" target="_blank" rel="noopener noreferrer">&larr; Outrider's Pathfinder Tools</a></p>
 </footer>
