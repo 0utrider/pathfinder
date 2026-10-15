@@ -176,7 +176,14 @@ h1,h2,h3{ font-family:var(--head); }
   .col-heading .col-sub{ font-family:var(--sans); font-size:12px; color:var(--text-faint); }
 
   .cover-level{ font-weight:700; font-size:15.5px; margin:0 0 4px; color:var(--text); }
-  .cover-mod{ font-size:13px; color:var(--text-dim); margin:0; }
+  .cover-mod{ font-size:13.5px; color:var(--text-dim); margin:0; }
+  .cover-mod strong{ font-weight:700; }
+  .cover-mod.full strong{ color:color-mix(in srgb, var(--cv-none) 70%, var(--text)); }
+  .cover-mod.lesser strong{ color:color-mix(in srgb, var(--cv-lesser) 70%, var(--text)); }
+  .cover-mod.standard strong{ color:color-mix(in srgb, var(--cv-standard) 70%, var(--text)); }
+  .cover-mod.greater strong{ color:color-mix(in srgb, var(--cv-greater) 70%, var(--text)); }
+  .cover-mod.none strong{ color:color-mix(in srgb, var(--cv-blocked) 70%, var(--text)); }
+  .calc-label{ margin:0; font-size:13px; color:var(--text-dim); }
   .cover-reason{ font-size:13.5px; color:var(--text-dim); margin:16px 0 0; }
 
   .linecheck{ display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border); font-size:13px; }
@@ -271,9 +278,13 @@ h1,h2,h3{ font-family:var(--head); }
           <input type="number" id="lowDist" value="50" step="1" min="0">
         </div>
       </div>
-      <div class="field">
-        <label for="lowBase">Height above ground (ft, relative to the base of cliff)</label>
-        <input type="number" id="lowBase" value="0" step="1">
+      <div class="check">
+        <input type="checkbox" id="lowFly">
+        <label for="lowFly">Flying / hovering above the ground</label>
+      </div>
+      <div class="field" id="lowHoverField" style="display:none">
+        <label for="lowBase">Height above the ground (ft)</label>
+        <input type="number" id="lowBase" value="0" step="1" min="0">
       </div>
     </div>
 
@@ -315,9 +326,9 @@ h1,h2,h3{ font-family:var(--head); }
     <div class="diagram-wrap">
       <svg id="diagram" viewBox="0 0 680 400" role="img" aria-label="Side-view diagram of the two creatures relative to the ledge, with sightlines colored by visibility"></svg>
       <div class="legend">
-        <span><span class="swatch" style="background:var(--text-dim)"></span>solid line: clear sightline</span>
-        <span><span class="swatch dashed"></span>dashed line: blocked sightline</span>
-        <span><span class="swatch" style="background:var(--amber)"></span>zone visible only from some stances (either body)</span>
+        <span><span class="swatch" style="background:var(--text-dim)"></span>solid: clear sightline</span>
+        <span><span class="swatch dashed"></span>dashed: blocked sightline</span>
+        <span><span class="swatch" style="background:var(--amber)"></span>zone visible only from some stances</span>
       </div>
     </div>
 
@@ -350,16 +361,13 @@ h1,h2,h3{ font-family:var(--head); }
 
     <div class="panel">
       <h2>GM Adjudication</h2>
-      <p class="adjudication">GMs have <a href="https://2e.aonprd.com/Rules.aspx?ID=2372" target="_blank" rel="noopener noreferrer">significant discretion</a> when determining cover. This tool is meant to inform that call and aid in adjudicating it, not to replace it. The cover levels shown are suggestions based on how much of a target is visible as a guideline, not a rule.</p>
+      <p class="adjudication">GMs have <a href="https://2e.aonprd.com/Rules.aspx?ID=2372" target="_blank" rel="noopener noreferrer">significant discretion</a> when determining cover. This tool is meant to inform that call and aid in adjudicating it, not to replace it. The cover levels shown are suggestions as a guideline, not a hard rule.</p>
     </div>
 
     <div class="panel">
       <h2>The math</h2>
-      <p class="hint">Edge sits at horizontal position 0, height <span id="hRef">20</span> ft. A sightline from point (x&#8321;,y&#8321;) to (x&#8322;,y&#8322;) clears the edge only if its height at x = 0 is at least the ledge height.</p>
-      <details open>
-        <summary>Show live calculation</summary>
-        <div class="eqbox" id="eqbox"></div>
-      </details>
+      <p class="calc-label">Live calculation</p>
+      <div class="eqbox" id="eqbox"></div>
     </div>
   </div>
 </main>
@@ -413,11 +421,12 @@ const $ = id => document.getElementById(id);
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function(){});
 })();
 
-const ledgeH = $('ledgeH'), lowSize=$('lowSize'), lowHeight=$('lowHeight'), lowDist=$('lowDist'), lowBase=$('lowBase');
+const ledgeH = $('ledgeH'), lowSize=$('lowSize'), lowHeight=$('lowHeight'), lowDist=$('lowDist'), lowBase=$('lowBase'), lowFly=$('lowFly'), lowHoverField=$('lowHoverField');
 const highSize=$('highSize'), highHeight=$('highHeight'), highDist=$('highDist'), highFly=$('highFly'), hoverField=$('hoverField'), hoverH=$('hoverH');
 
 lowSize.addEventListener('change', ()=>{ lowHeight.value = lowSize.value; recalc(); });
 highSize.addEventListener('change', ()=>{ highHeight.value = highSize.value; recalc(); });
+lowFly.addEventListener('change', ()=>{ lowHoverField.style.display = lowFly.checked ? 'block' : 'none'; recalc(); });
 highFly.addEventListener('change', ()=>{ hoverField.style.display = highFly.checked ? 'block' : 'none'; recalc(); });
 [ledgeH,lowHeight,lowDist,lowBase,highHeight,highDist,hoverH].forEach(el=>el.addEventListener('input', recalc));
 
@@ -434,15 +443,13 @@ function recalc(){
   const H = parseFloat(ledgeH.value) || 0;
   const hLow = parseFloat(lowHeight.value) || 0.5;
   const dLow = Math.max(0, parseFloat(lowDist.value) || 0);
-  const baseLow = parseFloat(lowBase.value) || 0;
+  const baseLow = lowFly.checked ? Math.max(0, parseFloat(lowBase.value) || 0) : 0;
   const hHigh = parseFloat(highHeight.value) || 0.5;
   const dHigh = Math.max(0, parseFloat(highDist.value) || 0);
   const hover = highFly.checked ? Math.max(0, parseFloat(hoverH.value) || 0) : 0;
 
   const xA = -dLow, yA0 = baseLow, yA1 = baseLow + hLow;
   const xB = dHigh, yB0 = H + hover, yB1 = yB0 + hHigh;
-
-  $('hRef').textContent = fmt(H);
 
   // Five sightlines: four corners plus center to center
   const yA5 = (yA0 + yA1) / 2, yB5 = (yB0 + yB1) / 2;
@@ -503,31 +510,31 @@ function recalc(){
       cls='none'; headline='No line of effect';
       sub = 'Every sightline, from any stance within either creature\u2019s space, is blocked by the ledge.';
       level = 'No line of effect';
-      mod = 'Cannot be targeted with attacks or targeted spells through the ledge.';
-      reason = 'Every sightline is blocked from any stance \u2014 there\u2019s no partial view to grant a lesser degree of cover, it\u2019s fully obstructed.';
+      mod = ['Cannot be targeted', 'Attacks and targeted spells are blocked by the ledge'];
+      reason = 'Every sightline is blocked from any stance - there\u2019s no partial view to grant a lesser degree of cover, it\u2019s fully obstructed.';
     } else if (fracDef >= 99.9){
       cls='full'; headline='Fully visible';
       sub = 'Every sightline clears the ledge, regardless of stance.';
       level = 'No cover';
-      mod = 'No circumstance bonus from the ledge.';
+      mod = ['No circumstance bonus', 'The ledge grants no cover'];
       reason = `Every sightline clears the ledge regardless of stance, so the ${subject} is fully exposed. Other terrain or creatures could still grant cover separately.`;
     } else {
       headline='Partially visible';
       sub = `Definitely visible: <strong>${fmt(fracDef)}%</strong> of its height.<br>Visible from some stance: up to <strong>${fmt(fracPoss)}%</strong>.`;
       if (fracPoss < 15){
         cls='greater'; level = 'Greater cover (or no line of effect)';
-        mod = '+4 circumstance bonus to AC, Reflex saves, and Stealth checks \u2014 or treat as fully blocked.';
+        mod = ['+4 circumstance bonus to AC, REF, Stealth', 'Or treat as fully blocked'];
       } else if (fracPoss < 50){
         cls='standard'; level = 'Standard cover';
-        mod = '+2 circumstance bonus to AC, Reflex saves, and Stealth checks.';
+        mod = ['+2 circumstance bonus to AC, REF, Stealth', ''];
       } else if (fracPoss < 90){
         cls='lesser'; level = 'Lesser cover';
-        mod = '+1 circumstance bonus to AC.';
+        mod = ['+1 circumstance bonus to AC', ''];
       } else {
         cls='full'; level = 'Little to no cover';
-        mod = 'No reliable bonus \u2014 most of the target is exposed.';
+        mod = ['No reliable bonus', 'Most of the target is exposed'];
       }
-      reason = `Roughly ${fmt(fracDef)}\u2013${fmt(fracPoss)}% of the ${subject}\u2019s height clears the edge, depending on exactly where within its space the viewer is looking from.`;
+      reason = `Roughly ${fmt(fracDef)}-${fmt(fracPoss)}% of the ${subject}\u2019s height clears the edge, depending on exactly where within its space the viewer is looking from.`;
     }
     return {cls, headline, sub, level, mod, reason};
   }
@@ -537,7 +544,9 @@ function recalc(){
     verdictEl.className = 'verdict ' + info.cls;
     verdictEl.innerHTML = `<div class="headline">${info.headline}</div><div class="sub">${info.sub}</div>`;
     $('coverLevel' + suffix).textContent = info.level;
-    $('coverMod' + suffix).textContent = info.mod;
+    const modEl = $('coverMod' + suffix);
+    modEl.innerHTML = '<strong>' + info.mod[0] + '</strong>' + (info.mod[1] ? '<br>' + info.mod[1] : '');
+    modEl.className = 'cover-mod ' + info.cls;
     $('coverReason' + suffix).textContent = info.reason;
   }
 
@@ -566,11 +575,11 @@ function recalc(){
 <span class="k">y at edge = y\u2081 + [(0-x\u2081)/(x\u2082-x\u2081)] \u00d7 (y\u2082-y\u2081), clear if \u2265 ${fmt(H)}</span>
 ${lines}
 
-<span class="k">Higher creature's body \u2014 visible above this height</span>
+<span class="k">Higher creature's body - visible above this height</span>
   as seen from lower creature's feet:   ${fmt(threshFromBottom)} ft
   as seen from lower creature's crown:  ${fmt(threshFromTop)} ft
 
-<span class="k">Lower creature's body \u2014 visible above this height</span>
+<span class="k">Lower creature's body - visible above this height</span>
   as seen from higher creature's feet:   ${fmt(threshFromBFeet)} ft
   as seen from higher creature's crown:  ${fmt(threshFromBCrown)} ft`;
 
