@@ -1,4 +1,6 @@
-# 🧮 Downtime Calculator
+<img src="img/outrider-downtime.webp" width="96" height="96" alt="">
+
+# Downtime Calculator
 A fast, friendly Pathfinder 2e & Starfinder 2e downtime calculator for Organized Play.  
 Because math is hard and you have better things to do between sessions.
 

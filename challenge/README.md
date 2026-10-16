@@ -1,3 +1,5 @@
+<img src="img/outrider-challenge-points.webp" width="96" height="96" alt="">
+
 # Challenge Point Calculator
 
 Pathfinder Society (2e) scaling and difficulty. Set the party level range, the number of players and pregens, and the tool works out Challenge Points and which level range to play, with the relevant footnotes.

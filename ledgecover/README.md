@@ -1,3 +1,5 @@
+<img src="img/outrider-ledge-los.webp" width="96" height="96" alt="">
+
 # Ledge Cover Line of Sight
 
 Pathfinder and Starfinder (2e) sightline calculator for a creature below a ledge and one on it. Enter the ledge height, each creature's size, height and distance, and the tool shows the cover level, the attack modifier and a diagram.
