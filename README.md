@@ -55,6 +55,16 @@ All three share one look: light and dark themes (the choice is remembered across
 
 ---
 
+## Collaborations
+
+Awesome modules by other authors.
+
+- **[Necromancer Thrall Helper](https://github.com/kerplunk177/necromancer-thrall-helper)**: PF2e Necromancer tools, Thrall Strikes and abilities, GM-approved summons.
+- **[Animater](https://github.com/roileaf/animater)**: Automated animations for PF2e, SF2e, and more.
+- **[PF2E Visioner](https://github.com/roileaf/pf2e-visioner)**: Visibility and cover toolkit for PF2e and SF2e with per-creature controls.
+
+---
+
 ## About This Repository
 
 Each tool lives in its own folder with its own assets, styles, and documentation.
