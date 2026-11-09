@@ -13,16 +13,16 @@ Each web tool is self-contained, so GMs and players can copy only what they need
 
 <table>
 <tr>
-<td width="80" align="center"><a href="challenge/index.html"><img src="img/outrider-challenge-points.webp" width="56" alt="Challenge Point Calculator"></a></td>
-<td><b><a href="challenge/index.html">Challenge Point Calculator</a></b> (<a href="challenge/README.md">readme</a>)<br>Determine scaling difficulty for Pathfinder Society (2e) organized play.</td>
+<td width="80" align="center"><a href="https://0utrider.github.io/pathfinder/challenge/"><img src="img/outrider-challenge-points.webp" width="56" alt="Challenge Point Calculator"></a></td>
+<td><b><a href="https://0utrider.github.io/pathfinder/challenge/">Challenge Point Calculator</a></b> (<a href="challenge/README.md">readme</a>)<br>Determine scaling difficulty for Pathfinder Society (2e) organized play.</td>
 </tr>
 <tr>
-<td width="80" align="center"><a href="downtime/index.html"><img src="img/outrider-downtime.webp" width="56" alt="Downtime Calculator"></a></td>
-<td><b><a href="downtime/index.html">Downtime Calculator</a></b> (<a href="downtime/readme.md">readme</a>)<br>Pathfinder Society and Starfinder Society (2e) downtime income, with copy-to-clipboard summaries.</td>
+<td width="80" align="center"><a href="https://0utrider.github.io/pathfinder/downtime/"><img src="img/outrider-downtime.webp" width="56" alt="Downtime Calculator"></a></td>
+<td><b><a href="https://0utrider.github.io/pathfinder/downtime/">Downtime Calculator</a></b> (<a href="downtime/readme.md">readme</a>)<br>Pathfinder Society and Starfinder Society (2e) downtime income, with copy-to-clipboard summaries.</td>
 </tr>
 <tr>
-<td width="80" align="center"><a href="ledgecover/index.html"><img src="img/outrider-ledge-los.webp" width="56" alt="Ledge Cover LOS"></a></td>
-<td><b><a href="ledgecover/index.html">Ledge Cover LOS</a></b> (<a href="ledgecover/README.md">readme</a>)<br>Pathfinder and Starfinder (2e) cover and line of sight when a ledge is involved.</td>
+<td width="80" align="center"><a href="https://0utrider.github.io/pathfinder/ledgecover/"><img src="img/outrider-ledge-los.webp" width="56" alt="Ledge Cover LOS"></a></td>
+<td><b><a href="https://0utrider.github.io/pathfinder/ledgecover/">Ledge Cover LOS</a></b> (<a href="ledgecover/README.md">readme</a>)<br>Pathfinder and Starfinder (2e) cover and line of sight when a ledge is involved.</td>
 </tr>
 </table>
 
