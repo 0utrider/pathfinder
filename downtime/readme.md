@@ -7,7 +7,7 @@ Because math is hard and you have better things to do between sessions.
 **Live version:**  
 https://0utrider.github.io/pathfinder/downtime/index.html
 
-Part of [Outrider's Pathfinder Projects](../README.md).
+Part of [Pathfinder & Starfinder Tools](../README.md).
 
 ---
 

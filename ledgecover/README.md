@@ -6,7 +6,7 @@ Pathfinder and Starfinder (2e) sightline calculator for a creature below a ledge
 
 **Live version:** https://0utrider.github.io/pathfinder/ledgecover/index.html
 
-Part of [Outrider's Pathfinder Projects](../README.md).
+Part of [Pathfinder & Starfinder Tools](../README.md).
 
 Assumes a simple vertical ledge (flat ground, flat top, one straight drop) with no other terrain in the way. Real terrain, creature reach, and GM adjudication all still apply.
 

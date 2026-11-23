@@ -6,7 +6,7 @@ Pathfinder Society (2e) scaling and difficulty. Set the party level range, the n
 
 **Live version:** https://0utrider.github.io/pathfinder/challenge/index.html
 
-Part of [Outrider's Pathfinder Projects](../README.md).
+Part of [Pathfinder & Starfinder Tools](../README.md).
 
 ## Run it
 

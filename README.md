@@ -1,8 +1,10 @@
 <img src="img/outrider-outpost.webp" width="96" height="96" alt="">
 
-# Outrider's Pathfinder Projects
+# Pathfinder & Starfinder Tools
 
-Small, focused tools for Pathfinder 2e and Starfinder 2e play.
+[![Site](https://img.shields.io/badge/site-0utrider.github.io%2Foutpost-7000d6)](https://0utrider.github.io/outpost/)
+
+Small, focused tools for Pathfinder 2e and Starfinder 2e play. Part of [Outrider's Outpost](https://0utrider.github.io/outpost/).
 Each web tool is self-contained, so GMs and players can copy only what they need.
 
 **Live site:** https://0utrider.github.io/pathfinder/
@@ -30,38 +32,7 @@ All three share one look: light and dark themes (the choice is remembered across
 
 ## Foundry VTT Modules
 
-<table>
-<tr>
-<td width="80" align="center"><a href="https://github.com/0utrider/outrider-web-tools"><img src="img/outrider-web-tools.webp" width="56" alt="Outrider's Web Tools"></a></td>
-<td><b><a href="https://github.com/0utrider/outrider-web-tools">Outrider's Web Tools</a></b><br>Opens the web tools above in popup windows from Foundry VTT, with launcher macros.</td>
-</tr>
-<tr>
-<td width="80" align="center"><a href="https://github.com/0utrider/outrider-cantrips"><img src="img/outrider-cantrips.webp" width="56" alt="Outrider's Cantrips"></a></td>
-<td><b><a href="https://github.com/0utrider/outrider-cantrips">Outrider's Cantrips</a></b><br>Collection of useful cantrip enhancements for RAW and Homebrew.</td>
-</tr>
-<tr>
-<td width="80" align="center"><a href="https://github.com/0utrider/outrider-hero-points"><img src="img/outrider-hero-points.webp" width="56" alt="Outrider's Hero Points"></a></td>
-<td><b><a href="https://github.com/0utrider/outrider-hero-points">Outrider's Hero Points</a></b><br>Configurable Hero Point rerolls for PF2e and SF2e, with a polished-metal Hero Die and Pass the Torch.</td>
-</tr>
-<tr>
-<td width="80" align="center"><a href="https://github.com/0utrider/outrider-rng"><img src="img/outrider-rng.webp" width="56" alt="Outrider's RNG"></a></td>
-<td><b><a href="https://github.com/0utrider/outrider-rng">Outrider's RNG</a></b><br>A better random number generator for dice rolls, using WebCrypto.</td>
-</tr>
-<tr>
-<td width="80" align="center"><a href="https://github.com/0utrider/outrider-stellar-attunement"><img src="img/outrider-stellar-attunement.webp" width="56" alt="Outrider's Stellar Attunement"></a></td>
-<td><b><a href="https://github.com/0utrider/outrider-stellar-attunement">Outrider's Stellar Attunement</a></b><br>SF2e Solarian helper. Cycles Stellar Attunement and keeps token art in sync.</td>
-</tr>
-</table>
-
----
-
-## Collaborations
-
-Awesome modules by other authors.
-
-- **[Necromancer Thrall Helper](https://github.com/kerplunk177/necromancer-thrall-helper)**: PF2e Necromancer tools, Thrall Strikes and abilities, GM-approved summons.
-- **[Animater](https://github.com/roileaf/animater)**: Automated animations for PF2e, SF2e, and more.
-- **[PF2E Visioner](https://github.com/roileaf/pf2e-visioner)**: Visibility and cover toolkit for PF2e and SF2e with per-creature controls.
+The Foundry VTT modules live at [Outrider's Outpost](https://0utrider.github.io/outpost/). The Outrider's Web Tools module opens the tools above in popup windows from Foundry.
 
 ---
 
